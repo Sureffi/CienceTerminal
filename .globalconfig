@@ -1,0 +1,4 @@
+is_global = true
+
+# Anonymous function can be made static
+dotnet_diagnostic.IDE0320.severity = none

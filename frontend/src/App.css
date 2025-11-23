@@ -1,0 +1,34 @@
+#root {
+  margin: 0;
+  padding: 0;
+  text-align: left;
+  background-color: #000000;
+  color: #ccc;
+  min-height: 100vh;
+}
+
+.app {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #000000;
+  color: white;
+}
+
+.header {
+  padding: 1rem 2rem;
+  border-bottom: 1px solid #222222;
+  background-color: #222222;
+}
+
+.title {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1DCD9F;
+}
+
+.main {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}

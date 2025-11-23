@@ -1,0 +1,39 @@
+root = true
+
+[**/*.cs]
+# Suppress block body suggestions
+dotnet_diagnostic.IDE0022.severity = none
+dotnet_diagnostic.IDE0061.severity = none
+# Namespace diagnostics - enable these for code actions
+# dotnet_diagnostic.IDE0130.severity = none
+dotnet_diagnostic.IDE0160.severity = none
+dotnet_diagnostic.IDE0161.severity = none
+
+# Anonymous function can be made static
+dotnet_diagnostic.IDE0320.severity = none
+
+# Add braces to if statement
+dotnet_diagnostic.IDE0011.severity = none
+# Use explicit type instead of var
+dotnet_diagnostic.IDE0008.severity = none
+# If statement can be simplified
+dotnet_diagnostic.IDE0046.severity = none
+# Can be marked as static 
+dotnet_diagnostic.CA1822.severity = none
+# Expression value never used 
+dotnet_diagnostic.IDE0058.severity = none
+# Use primary constructor
+dotnet_diagnostic.IDE0290.severity = none
+# Anonymous function can be made static
+dotnet_diagnostic.IDE0320.severity = silent
+dotnet_code_quality_unused_parameters = non_public
+
+# Use logger delegate
+dotnet_diagnostic.CA1848.severity = none
+
+# Collection initialization can be simplified
+dotnet_diagnostic.IDE0028.severity = none
+dotnet_diagnostic.IDE0305.severity = none
+
+# Implement with copilot
+dotnet_diagnostic.IDE3000.severity = none

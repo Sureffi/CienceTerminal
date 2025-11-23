@@ -1,0 +1,41 @@
+/**
+ * Custom Font Declarations
+ * ProtoMono: Monospace font for terminal/code aesthetic
+ * Roobert: Sans-serif font for UI text
+ */
+
+/* ProtoMono Regular */
+@font-face {
+  font-family: 'ProtoMono';
+  src: url('/src/assets/fonts/ProtoMono-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ProtoMono Bold */
+@font-face {
+  font-family: 'ProtoMono';
+  src: url('/src/assets/fonts/ProtoMono-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Roobert Regular */
+@font-face {
+  font-family: 'Roobert';
+  src: url('/src/assets/fonts/Roobert-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Roobert SemiBold */
+@font-face {
+  font-family: 'Roobert';
+  src: url('/src/assets/fonts/Roobert-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}

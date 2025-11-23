@@ -1,0 +1,40 @@
+{
+  "name": "frontend",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "eslint .",
+    "preview": "vite preview",
+    "build-to-api": "npm run build && cp -r dist/* ../backend/CienceTerminal.API/wwwroot/"
+  },
+  "dependencies": {
+    "@auth0/auth0-react": "^2.6.0",
+    "@microsoft/signalr": "^8.0.7",
+    "kbar": "^0.1.0-beta.48",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-router-dom": "^7.9.2",
+    "styled-components": "^6.1.19",
+    "vaul": "^1.1.2"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.29.0",
+    "@svgr/rollup": "^8.1.0",
+    "@types/node": "^24.0.14",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "@types/styled-components": "^5.1.34",
+    "@vitejs/plugin-react": "^4.5.2",
+    "eslint": "^9.29.0",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.20",
+    "globals": "^16.2.0",
+    "typescript": "~5.8.3",
+    "typescript-eslint": "^8.34.1",
+    "vite": "^7.0.0",
+    "vite-plugin-svgr": "^4.5.0"
+  }
+}

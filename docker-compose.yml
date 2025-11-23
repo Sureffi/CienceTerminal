@@ -1,0 +1,118 @@
+services:
+  # Infrastructure Services
+  localstack:
+    image: localstack/localstack:latest
+    container_name: cienceterminal-localstack
+    ports:
+      - "4566:4566"
+    environment:
+      - SERVICES=sns,sqs
+      - DEBUG=1
+      - DOCKER_HOST=unix:///var/run/docker.sock
+      - HOST_TMP_FOLDER=${TMPDIR:-/tmp/}localstack
+    volumes:
+      - "${TMPDIR:-/tmp}/localstack:/var/lib/localstack"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    networks:
+      - cienceterminal-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4566/_localstack/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # API Gateway
+  api-gateway:
+    build:
+      context: .
+      dockerfile: ./services/api-gateway/Dockerfile
+    container_name: cienceterminal-api-gateway
+    env_file:
+      - .env
+    ports:
+      - "${API_GATEWAY_PORT:-5149}:8080"
+    networks:
+      - cienceterminal-network
+    restart: unless-stopped
+
+  # Microservices
+  twitter-scanner:
+    build:
+      context: .
+      dockerfile: ./services/twitter-scanner/Dockerfile
+    container_name: cienceterminal-twitter-scanner
+    depends_on:
+      localstack:
+        condition: service_healthy
+    env_file:
+      - .env
+    environment:
+      # Override .env values for container networking
+      - AWS__LocalStackUrl=http://localstack:4566
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
+      - AWS_DEFAULT_REGION=us-east-1
+    ports:
+      - "${TWITTER_SCANNER_PORT:-5147}:8080"
+    networks:
+      - cienceterminal-network
+    restart: unless-stopped
+
+  alert-service:
+    build:
+      context: .
+      dockerfile: ./services/alert-service/Dockerfile
+    container_name: cienceterminal-alert-service
+    depends_on:
+      localstack:
+        condition: service_healthy
+    env_file:
+      - .env
+    environment:
+      # Override .env values for container networking
+      - AWS__LocalStackUrl=http://localstack:4566
+      - AWS__SQS__TwitterAlertsQueueUrl=http://localstack:4566/000000000000/alert-service-twitter-alerts-queue
+      - AWS__SQS__CaMentionAlertsQueueUrl=http://localstack:4566/000000000000/alert-service-ca-mention-alerts-queue
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
+      - AWS_DEFAULT_REGION=us-east-1
+    ports:
+      - "${ALERT_SERVICE_PORT:-5148}:8080"
+    networks:
+      - cienceterminal-network
+    restart: unless-stopped
+
+  # user-management:
+  #   build:
+  #     context: .
+  #     dockerfile: ./services/user-management/Dockerfile
+  #   container_name: cienceterminal-user-management
+  #   env_file:
+  #     - .env
+  #   ports:
+  #     - "${USER_MANAGEMENT_PORT:-5150}:8080"
+  #   networks:
+  #     - cienceterminal-network
+  #   restart: unless-stopped
+
+  # Frontend
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: cienceterminal-frontend
+    depends_on:
+      - api-gateway
+    env_file:
+      - .env
+    environment:
+      - VITE_API_GATEWAY_URL=http://localhost:${API_GATEWAY_PORT:-5149}
+    ports:
+      - "${FRONTEND_PORT:-3000}:3000"
+    networks:
+      - cienceterminal-network
+    restart: unless-stopped
+
+networks:
+  cienceterminal-network:
+    driver: bridge

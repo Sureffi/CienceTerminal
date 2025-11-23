@@ -1,0 +1,74 @@
+# .NET
+bin/
+obj/
+*.user
+*.suo
+*.cache
+*.docstates
+*.nuget.props
+*.nuget.targets
+/packages/
+/TestResults/
+/artifacts/
+
+# Visual Studio
+.vs/
+.vscode/
+*.sln.docstates
+
+# Build results
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+build/
+bld/
+[Bb]in/
+[Oo]bj/
+msbuild.log
+msbuild.err
+msbuild.wrn
+
+# Frontend
+src/frontend/node_modules/
+src/frontend/dist/
+src/frontend/build/
+src/frontend/.env.local
+src/frontend/.env.development.local
+src/frontend/.env.test.local
+src/frontend/.env.production.local
+src/frontend/npm-debug.log*
+src/frontend/yarn-debug.log*
+src/frontend/yarn-error.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+logs/
+
+# Data files
+data/
+
+# Runtime
+*.tmp
+*.temp
+
+# Configuration
+appsettings.Development.json
+appsettings.Local.json
+
+# Environment variables (NEVER commit these)
+.env
+.env.local
+.env.*.local
+**/.env
+**/.env.local
+**/.env.*.local
