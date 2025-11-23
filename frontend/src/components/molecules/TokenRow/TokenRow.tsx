@@ -196,12 +196,12 @@ const MentionCount = styled.span`
     color: ${({ theme }) => theme.colors.textPrimary};
 `;
 
-const ChartPlaceholder = styled.div`
-    width: 54px;
-    height: 21px;
-    background: #86EFAC;
-    border-radius: ${({ theme }) => theme.borderRadius.sm};
-`;
+// const ChartPlaceholder = styled.div`
+//     width: 54px;
+//     height: 21px;
+//     background: #86EFAC;
+//     border-radius: ${({ theme }) => theme.borderRadius.sm};
+// `;
 
 const MetricText = styled.span`
     font-family: ${({ theme }) => theme.typography.fontFamily.mono};
@@ -209,11 +209,11 @@ const MetricText = styled.span`
     color: ${({ theme }) => theme.colors.textPrimary};
 `;
 
-const PercentText = styled.span<{ $isHighRisk?: boolean }>`
-    font-family: ${({ theme }) => theme.typography.fontFamily.mono};
-    font-size: 12px;
-    color: ${({ $isHighRisk }) => ($isHighRisk ? '#FF6868' : '#A2FF68')};
-`;
+// const PercentText = styled.span<{ $isHighRisk?: boolean }>`
+//     font-family: ${({ theme }) => theme.typography.fontFamily.mono};
+//     font-size: 12px;
+//     color: ${({ $isHighRisk }) => ($isHighRisk ? '#FF6868' : '#A2FF68')};
+// `;
 
 const PriceChangeText = styled.span<{ $isPositive: boolean }>`
     font-family: ${({ theme }) => theme.typography.fontFamily.mono};

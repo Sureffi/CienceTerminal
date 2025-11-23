@@ -5,7 +5,7 @@ import { Button } from '@/components/atoms';
 import { useCaMentionAlerts } from '@/providers/CaMentionAlertProvider';
 import { transformCaMentionAlertsToTokens } from '@/utils/caMentionAlertTransformer';
 import { useCoinMentions } from '@/hooks/useCoinMentions';
-import type { Token } from '@/types/token';
+// import type { Token } from '@/types/token';
 
 // Helper function to format follower count
 const formatFollowers = (num: number): string => {

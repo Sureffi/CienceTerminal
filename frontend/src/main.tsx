@@ -9,7 +9,7 @@ import './index.css'
 
 const rootElement = document.getElementById('root')!;
 
-const Wrapper = ({ children }) => {
+const Wrapper = ({ children }: { children: React.ReactNode }) => {
     const { isLoading, error } = useAuth0();
 
     if (isLoading) {

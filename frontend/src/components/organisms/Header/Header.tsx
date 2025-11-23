@@ -4,7 +4,7 @@ import logoIcon from "@/assets/logo-small.svg";
 import screenerIcon from "@/assets/screener-icon.svg";
 import terminalIcon from "@/assets/terminal-icon.svg";
 import watchlistIcon from '@/assets/heart-icon.svg';
-import { LoginButton, SearchButton } from "@/components/molecules";
+import { SearchButton } from "@/components/molecules";
 import { useLocation, useNavigate } from "react-router-dom";
 
 export const Header = () => {

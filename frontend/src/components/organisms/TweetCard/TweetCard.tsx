@@ -3,8 +3,6 @@ import { Button } from '@/components/atoms';
 import { TokenCard } from '@/components/molecules';
 import type { Token } from '@/types/token';
 import UserIcon from '@/assets/user-icon.svg?react';
-import { theme } from '@/styles/theme';
-
 interface TweetCardProps {
     token?: Token;
     useMockData?: boolean;
@@ -53,7 +51,7 @@ export const TweetCard = ({ token, useMockData = false }: TweetCardProps) => {
     if (!tweet) return null;
 
     // TODO(human): Add highlighted token symbol logic
-    const highlightTokenSymbol = (text: string, symbol: string): React.ReactNode => {
+    const highlightTokenSymbol = (text: string, _symbol: string): React.ReactNode => {
         // This should split the text and wrap the token symbol in a styled span
         return text;
     };

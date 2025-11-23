@@ -5,7 +5,7 @@ import { transformTwitterAlertsToTokens } from "@/utils/twitterAlertTransformer"
 
 export const TerminalPage = () => {
     // Get real-time Twitter alerts from backend
-    const { alerts, isConnected, connectionError } = useTwitterAlerts();
+    const { alerts } = useTwitterAlerts();
 
     // Transform Twitter alerts to Token format
     const tokens = transformTwitterAlertsToTokens(alerts);

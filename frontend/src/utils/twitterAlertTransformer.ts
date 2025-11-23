@@ -29,7 +29,8 @@ const generatePriceHistory = (basePrice: number = 0.05, volatility: number = 0.2
 export const transformTwitterAlertToToken = (alert: TwitterAlert): Token => {
     // Calculate current price from market cap (rough estimate)
     // Assuming 1B token supply for price calculation
-    const estimatedPrice = alert.coinMarketCap ? alert.coinMarketCap / 1_000_000_000 : 0.05;
+    const coinMarketCap = 'coinMarketCap' in alert ? alert.coinMarketCap : undefined;
+    const estimatedPrice = coinMarketCap ? coinMarketCap / 1_000_000_000 : 0.05;
 
     const token: Token = {
         id: alert.id,
@@ -37,10 +38,10 @@ export const transformTwitterAlertToToken = (alert: TwitterAlert): Token => {
         name: alert.coinName,
         blockchain: 'SOL', // Based on your Solana-focused architecture
         contractAddress: alert.coinMint,
-        iconUrl: alert.coinImageUrl, // Token icon from metadata service
+        iconUrl: 'coinImageUrl' in alert ? alert.coinImageUrl : undefined, // Token icon from metadata service
 
         // Metrics - now available from coin metrics
-        mentions24h: alert.coinMentionCount24h ?? 0,
+        mentions24h: 'coinMentionCount24h' in alert ? (alert.coinMentionCount24h ?? 0) : 0,
         topMentioners: [
             {
                 id: alert.authorUsername,
@@ -55,13 +56,13 @@ export const transformTwitterAlertToToken = (alert: TwitterAlert): Token => {
         priceChange24h: undefined, // Not available in current data
 
         // Token stats from alert
-        age: alert.coinAge || 'Unknown',
-        marketCap: alert.coinMarketCap || 0,
-        volume24h: alert.coinVolume24h ?? 0,
-        liquidity: alert.coinLiquidity || 0,
+        age: 'coinAge' in alert ? (alert.coinAge || 'Unknown') : 'Unknown',
+        marketCap: coinMarketCap || 0,
+        volume24h: 'coinVolume24h' in alert ? (alert.coinVolume24h ?? 0) : 0,
+        liquidity: 'coinLiquidity' in alert ? (alert.coinLiquidity || 0) : 0,
         holdersCount: alert.coinHolderCount || 0,
-        top10HoldersPercent: alert.coinTop10Holders || 0,
-        devHoldPercent: alert.coinDevHolding || 0,
+        top10HoldersPercent: 'coinTop10Holders' in alert ? (alert.coinTop10Holders || 0) : 0,
+        devHoldPercent: 'coinDevHolding' in alert ? (alert.coinDevHolding || 0) : 0,
 
         // Tweet context from alert
         tweet: {

@@ -30,7 +30,8 @@ export const colors = {
     // Text Colors
     // ========================================
     textPrimary: '#FFFFFF',         // Main text
-    textGhost: 'rgba(255, 255, 255, 0.6)',       // Secondary text
+    textSecondary: 'rgba(255, 255, 255, 0.8)',   // Secondary text
+    textGhost: 'rgba(255, 255, 255, 0.6)',       // Ghost text
     textMuted: 'rgba(255, 255, 255, 0.4)',           // Muted/tertiary text
     textDisabled: '#6B7280',        // Disabled text
     textInverse: '#111827',         // Text on light backgrounds
