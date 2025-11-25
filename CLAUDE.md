@@ -275,35 +275,56 @@ aws --endpoint-url=http://localhost:4566 sqs receive-message --queue-url http://
 ## Configuration & Environment
 
 ### Configuration Pattern
-- **Single `.env` file** at repository root contains all configuration (shared across services)
+- **Service-specific `.env` files** - Each service has its own `.env` file in its service directory with only the variables it needs
+  - `services/twitter-scanner/.env` - Twitter Scanner configuration
+  - `services/alert-service/.env` - Alert Service configuration
+  - `services/api-gateway/.env` - API Gateway configuration
+  - `services/token-metrics-service/.env` - Token Metrics configuration
+  - `frontend/.env` - Frontend configuration
+- **Template files** - Each service has a `.env.example` file documenting required variables
 - **DependencyInjection.cs** files in each layer register services via extension methods
 - **Options pattern** with strongly-typed configuration classes (e.g., `ApiGatewayOptions`, `ServiceOptions`)
-- **DotNetEnv** library loads `.env` file in `Program.cs` of each service
+- **DotNetEnv** library loads service-specific `.env` file in `Program.cs` of each service
 - Services override container-specific values via docker-compose environment variables
 
-### Environment Variables (see `.env`)
-**Required API Keys**:
-- `ApiKeys__Groq`: Groq AI API key for tweet classification
-- `ApiKeys__Twitter`: Twitter API key for WebSocket stream
-- `ApiKeys__Helius`: Helius RPC API key for Solana blockchain data
+### Environment Variables
 
-**Auth0 Configuration**:
-- `AUTH0_DOMAIN`: Auth0 tenant domain
-- `AUTH0_AUDIENCE`: API identifier for JWT validation
-- `VITE_AUTH0_DOMAIN`, `VITE_AUTH0_CLIENT_ID`, `VITE_AUTH0_AUDIENCE`: Frontend Auth0 config
+Each service has its own `.env` file with only the variables it needs. See `.env.example` files in each service directory for complete documentation.
 
-**AWS Configuration** (LocalStack in development):
+**Twitter Scanner Service** (`services/twitter-scanner/.env`):
+- `ApiKeys__Groq`, `ApiKeys__Twitter`, `ApiKeys__Helius`: API keys
+- `AWS__SNS__TwitterAlertsTopicArn`, `AWS__SNS__CaMentionDetectedTopicArn`: SNS topics (publisher)
+- `TWITTER_SCANNER_PORT=5147`
+
+**Alert Service** (`services/alert-service/.env`):
+- `ConnectionStrings__AlertServiceDb`, `ConnectionStrings__CienceTerminalDb`: Database connections
+- `AUTH0_DOMAIN`, `AUTH0_AUDIENCE`: Auth0 configuration for SignalR
+- `AWS__SQS__*QueueUrl`: SQS queue URLs (consumer)
+- `CORS_ORIGIN_*`: Frontend CORS origins
+- `ALERT_SERVICE_PORT=5148`
+
+**Token Metrics Service** (`services/token-metrics-service/.env`):
+- `ConnectionStrings__CienceTerminalDb`: Database connection
+- `ApiKeys__Helius`: Helius API key
+- `AWS__SQS__CaMentionDetectedQueueUrl`: SQS queue (consumer)
+- `AWS__SNS__*TopicArn`: SNS topics (publisher)
+- `TOKEN_METRICS_PORT=5237`
+
+**API Gateway** (`services/api-gateway/.env`):
+- `AUTH0_DOMAIN`, `AUTH0_AUDIENCE`: Auth0 configuration
+- `ALERT_SERVICE_URL`, `TWITTER_SCANNER_URL`, etc.: Downstream service URLs
+- `CORS_ORIGIN_*`: Frontend CORS origins
+- `API_GATEWAY_PORT=5149`
+
+**Frontend** (`frontend/.env`):
+- `VITE_AUTH0_DOMAIN`, `VITE_AUTH0_CLIENT_ID`, `VITE_AUTH0_AUDIENCE`: Auth0 configuration
+- `VITE_API_BASE_URL`, `VITE_USER_MANAGEMENT_URL`: Backend API URLs
+- `VITE_DEMO_MODE`: Enable demo mode with mock data
+
+**AWS Configuration** (LocalStack in development, same across services):
 - `AWS__UseLocalStack=true`: Use LocalStack instead of real AWS
 - `AWS__LocalStackUrl=http://localhost:4566`
-- `AWS__SNS__*TopicArn`: SNS topic ARNs
-- `AWS__SQS__*QueueUrl`: SQS queue URLs
-
-**Service Ports**:
-- API Gateway: 5149
-- Twitter Scanner: 5147
-- Alert Service: 5148
-- Token Metrics: Not yet assigned
-- Frontend: 3000 (dev), proxies to API Gateway
+- `AWS_ACCESS_KEY_ID=test`, `AWS_SECRET_ACCESS_KEY=test`: LocalStack credentials
 
 ### CORS Configuration
 Configured in each service's `Program.cs` to allow:

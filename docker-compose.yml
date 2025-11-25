@@ -28,7 +28,7 @@ services:
       dockerfile: ./services/api-gateway/Dockerfile
     container_name: cienceterminal-api-gateway
     env_file:
-      - .env
+      - ./services/api-gateway/.env
     ports:
       - "${API_GATEWAY_PORT:-5149}:8080"
     networks:
@@ -45,7 +45,7 @@ services:
       localstack:
         condition: service_healthy
     env_file:
-      - .env
+      - ./services/twitter-scanner/.env
     environment:
       # Override .env values for container networking
       - AWS__LocalStackUrl=http://localstack:4566
@@ -67,17 +67,43 @@ services:
       localstack:
         condition: service_healthy
     env_file:
-      - .env
+      - ./services/alert-service/.env
     environment:
       # Override .env values for container networking
       - AWS__LocalStackUrl=http://localstack:4566
       - AWS__SQS__TwitterAlertsQueueUrl=http://localstack:4566/000000000000/alert-service-twitter-alerts-queue
-      - AWS__SQS__CaMentionAlertsQueueUrl=http://localstack:4566/000000000000/alert-service-ca-mention-alerts-queue
+      - AWS__SQS__MentionAggregatesUpdatedQueueUrl=http://localstack:4566/000000000000/alert-service-mention-aggregates-updated-queue
+      - AWS__SQS__AlertRemovalQueueUrl=http://localstack:4566/000000000000/alert-service-alert-removal-queue
+      - AWS__SQS__CoinBlacklistedQueueUrl=http://localstack:4566/000000000000/alert-service-coin-blacklisted-queue
+      - AWS__SQS__TokenMetricsUpdatedQueueUrl=http://localstack:4566/000000000000/alert-service-token-metrics-updated-queue
       - AWS_ACCESS_KEY_ID=test
       - AWS_SECRET_ACCESS_KEY=test
       - AWS_DEFAULT_REGION=us-east-1
     ports:
       - "${ALERT_SERVICE_PORT:-5148}:8080"
+    networks:
+      - cienceterminal-network
+    restart: unless-stopped
+
+  token-metrics-service:
+    build:
+      context: .
+      dockerfile: ./services/token-metrics-service/Dockerfile
+    container_name: cienceterminal-token-metrics
+    depends_on:
+      localstack:
+        condition: service_healthy
+    env_file:
+      - ./services/token-metrics-service/.env
+    environment:
+      # Override .env values for container networking
+      - AWS__LocalStackUrl=http://localstack:4566
+      - AWS__SQS__CaMentionDetectedQueueUrl=http://localstack:4566/000000000000/token-metrics-service-ca-mention-detected-queue
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
+      - AWS_DEFAULT_REGION=us-east-1
+    ports:
+      - "${TOKEN_METRICS_PORT:-5237}:8080"
     networks:
       - cienceterminal-network
     restart: unless-stopped
@@ -88,7 +114,7 @@ services:
   #     dockerfile: ./services/user-management/Dockerfile
   #   container_name: cienceterminal-user-management
   #   env_file:
-  #     - .env
+  #     - ./services/user-management/.env
   #   ports:
   #     - "${USER_MANAGEMENT_PORT:-5150}:8080"
   #   networks:
@@ -104,7 +130,7 @@ services:
     depends_on:
       - api-gateway
     env_file:
-      - .env
+      - ./frontend/.env
     environment:
       - VITE_API_GATEWAY_URL=http://localhost:${API_GATEWAY_PORT:-5149}
     ports:

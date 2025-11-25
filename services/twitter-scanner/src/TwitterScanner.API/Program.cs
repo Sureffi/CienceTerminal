@@ -4,13 +4,23 @@ using TwitterScanner.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Load .env file from service directory
-// TODO: This is loading wrong .env
-var envPath = Path.Combine(Directory.GetCurrentDirectory(), "..", "..", "..", "..", ".env");
+// Load .env file from service directory (services/twitter-scanner/.env)
+// Try relative path from bin directory first (for published/compiled apps)
+var envPath = Path.Combine(Directory.GetCurrentDirectory(), "..", "..", "..", ".env");
+if (!File.Exists(envPath))
+{
+    // Try relative path from source directory (for dotnet run during development)
+    envPath = Path.Combine(Directory.GetCurrentDirectory(), "..", "..", ".env");
+}
+
 if (File.Exists(envPath))
 {
     Env.Load(envPath);
-    Console.WriteLine($".env file loaded from service directory");
+    Console.WriteLine($"[Twitter Scanner] .env file loaded from: {Path.GetFullPath(envPath)}");
+}
+else
+{
+    Console.WriteLine($"[Twitter Scanner] Warning: .env file not found. Tried: {Path.GetFullPath(envPath)}");
 }
 
 // Add environment variables to configuration
