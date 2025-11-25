@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useAuth0 } from '@auth0/auth0-react';
+// import { useAuth0 } from '@auth0/auth0-react';
 import { API_ENDPOINTS } from '@/config/api';
 
 export interface CaMentionRecord {
@@ -38,7 +38,8 @@ export const useCoinMentions = (
     coinAddress: string | null | undefined,
     hours: number = 24
 ): UseCoinMentionsReturn => {
-    const { getAccessTokenSilently } = useAuth0();
+    // Auth0 temporarily disabled
+    // const { getAccessTokenSilently } = useAuth0();
     const [mentions, setMentions] = useState<CaMentionRecord[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
@@ -54,23 +55,24 @@ export const useCoinMentions = (
             setLoading(true);
             setError(null);
 
-            // Try to get token, but don't fail if not available (auth is disabled in API Gateway)
-            let headers: HeadersInit = {
+            // Auth0 disabled - fetch without authentication
+            const headers: HeadersInit = {
                 'Content-Type': 'application/json',
             };
 
-            try {
-                const token = await getAccessTokenSilently();
-                if (token) {
-                    headers = {
-                        ...headers,
-                        'Authorization': `Bearer ${token}`,
-                    };
-                }
-            } catch (authError) {
-                // User not logged in - continue without auth header
-                console.log('No authentication available, fetching without token');
-            }
+            // Auth0 temporarily disabled
+            // try {
+            //     const token = await getAccessTokenSilently();
+            //     if (token) {
+            //         headers = {
+            //             ...headers,
+            //             'Authorization': `Bearer ${token}`,
+            //         };
+            //     }
+            // } catch (authError) {
+            //     // User not logged in - continue without auth header
+            //     console.log('No authentication available, fetching without token');
+            // }
 
             const response = await fetch(
                 API_ENDPOINTS.mentions.byCoin(coinAddress, hours),
