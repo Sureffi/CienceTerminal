@@ -16,3 +16,16 @@ applications:
       cache:
         paths:
           - node_modules/**/*
+    customHeaders:
+      - pattern: '**/*'
+        headers:
+          - key: 'Cache-Control'
+            value: 'no-cache'
+      - pattern: '/assets/*'
+        headers:
+          - key: 'Cache-Control'
+            value: 'max-age=31536000, immutable'
+    redirects:
+      - source: '/<*>'
+        target: '/index.html'
+        status: '404-200'
