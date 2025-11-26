@@ -6,9 +6,9 @@ const config = {
     signalrHubUrl: import.meta.env.VITE_API_GATEWAY_URL || 'http://localhost:5149',
   },
   production: {
-    // In production, use relative paths (assumes frontend and API Gateway are on same domain)
-    apiBaseUrl: '',
-    signalrHubUrl: '',
+    // In production, use VITE_API_GATEWAY_URL if set, otherwise use relative paths
+    apiBaseUrl: import.meta.env.VITE_API_GATEWAY_URL || '',
+    signalrHubUrl: import.meta.env.VITE_API_GATEWAY_URL || '',
   }
 };
 
