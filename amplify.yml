@@ -10,7 +10,7 @@ applications:
           commands:
             - npm run build
       artifacts:
-        baseDirectory: dist
+        baseDirectory: frontend/dist
         files:
           - '**/*'
       cache:
@@ -26,6 +26,6 @@ applications:
           - key: 'Cache-Control'
             value: 'max-age=31536000, immutable'
     redirects:
-      - source: '</^[^.]+$|\.(?!(css|gif|ico|jpg|js|png|txt|svg|woff|woff2|ttf|otf|map|json)$)([^.]+$)/>'
+      - source: '/<*>'
         target: '/index.html'
         status: '200'
