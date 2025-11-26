@@ -6,6 +6,7 @@ using AlertService.Domain.Interfaces;
 using AlertService.Infrastructure;
 using AlertService.Infrastructure.Hubs;
 using AlertService.Infrastructure.Services;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -87,6 +88,24 @@ var port = Environment.GetEnvironmentVariable("ALERT_SERVICE_PORT")
 builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
 
 var app = builder.Build();
+
+// Run database migrations automatically on startup
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        var alertDbContext = services.GetRequiredService<AlertService.Infrastructure.Data.AlertServiceDbContext>();
+        Console.WriteLine("[Alert Service] Running AlertServiceDb migrations...");
+        alertDbContext.Database.Migrate();
+        Console.WriteLine("[Alert Service] AlertServiceDb migrations completed successfully.");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"[Alert Service] ERROR: AlertServiceDb migration failed: {ex.Message}");
+        throw;
+    }
+}
 
 // Configure the HTTP request pipeline
 if (app.Environment.IsDevelopment())

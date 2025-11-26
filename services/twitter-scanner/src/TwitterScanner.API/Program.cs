@@ -1,4 +1,5 @@
 using DotNetEnv;
+using Microsoft.EntityFrameworkCore;
 using TwitterScanner.Application;
 using TwitterScanner.Infrastructure;
 
@@ -41,6 +42,24 @@ var port = Environment.GetEnvironmentVariable("TWITTER_SCANNER_PORT") ?? Environ
 builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
 
 var app = builder.Build();
+
+// Run database migrations automatically on startup
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        var dbContext = services.GetRequiredService<TwitterScanner.Infrastructure.Data.MentionPersistenceDbContext>();
+        Console.WriteLine("[Twitter Scanner] Running database migrations...");
+        dbContext.Database.Migrate();
+        Console.WriteLine("[Twitter Scanner] Database migrations completed successfully.");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"[Twitter Scanner] ERROR: Migration failed: {ex.Message}");
+        throw;
+    }
+}
 
 // Configure the HTTP request pipeline
 if (app.Environment.IsDevelopment())
