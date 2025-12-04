@@ -40,7 +40,7 @@ export const TokenRow = ({ token, onAdd, onRowClick }: TokenRowProps) => {
         <RowContainer>
             <Row onClick={handleRowClick}>
                 {/* Token Column */}
-                <Cell>
+                <Cell $isSticky>
                     <TokenInfo>
                         {token.iconUrl && <TokenIcon src={token.iconUrl} alt={token.symbol} />}
                         <TokenIdentifier symbol={token.symbol} blockchain={token.blockchain} />
@@ -133,24 +133,65 @@ const RowContainer = styled.div`
 const Row = styled.div`
     display: grid;
     height: 44px;
-    grid-template-columns: 250px 150px 80px 150px 130px 100px 110px 90px 100px;
+    grid-template-columns: minmax(200px, 2fr) minmax(120px, 1.5fr) minmax(80px, 0.8fr) minmax(120px, 1.2fr) minmax(110px, 1.2fr) minmax(100px, 1fr) minmax(100px, 1fr) minmax(90px, 1fr) minmax(100px, 1fr);
     align-items: center;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    border-radius: 6px;
     flex: 1;
+    min-width: 1120px;
     box-shadow: 0 0 0 rgba(255, 255, 255, 0);
-    transition: .3s ease-out;
+    transition: box-shadow .3s ease-out;
     cursor: pointer;
+    background: #000000;
 
     &:hover {
-        border-color: rgba(255, 255, 255, 0.8);
         box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.04);
     }
  `;
 
-const Cell = styled.div`
+const Cell = styled.div<{ $isSticky?: boolean }>`
     display: flex;
     align-items: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    height: 100%;
+    transition: border-color .3s ease-out;
+
+    ${Row}:hover & {
+        border-top-color: rgba(255, 255, 255, 0.8);
+        border-bottom-color: rgba(255, 255, 255, 0.8);
+    }
+
+    &:last-child {
+        border-right: 1px solid rgba(255, 255, 255, 0.05);
+        border-top-right-radius: 6px;
+        border-bottom-right-radius: 6px;
+
+        ${Row}:hover & {
+            border-right-color: rgba(255, 255, 255, 0.8);
+        }
+    }
+
+    ${({ $isSticky }) =>
+        $isSticky &&
+        `
+        position: sticky;
+        left: 0;
+        background: #000000;
+        z-index: 40;
+        will-change: transform;
+        transform: translateZ(0);
+        backface-visibility: hidden;
+        border-left: 1px solid rgba(255, 255, 255, 0.05);
+        border-top-left-radius: 6px;
+        border-bottom-left-radius: 6px;
+    `}
+
+    ${Row}:hover & {
+        ${({ $isSticky }) =>
+        $isSticky &&
+        `
+            border-left-color: rgba(255, 255, 255, 0.8);
+        `}
+    }
 `;
 
 const TokenInfo = styled.div`
@@ -164,7 +205,7 @@ const TokenIcon = styled.img`
     width: 32px;
     height: 32px;
     border-radius: 3px;
-    padding: 5px;
+    margin: 5px;
 `;
 
 const MentionsContainer = styled.div`
@@ -222,7 +263,7 @@ const PriceChangeText = styled.span<{ $isPositive: boolean }>`
 `;
 
 const AddButton = styled.button`
-    height: 100$;
+    height: 44px;
     min-width: 44px;
     border-radius: 6px;
     border: 1px solid rgba(255, 255, 255, 0.05);

@@ -74,17 +74,17 @@ export const ScreenerPage = () => {
 
     return (
         <>
+            <Header>
+                <Tabs
+                    tabs={tabs}
+                    activeTab={activeTab}
+                    onTabChange={(tabId) => setActiveTab(tabId as TokenFilterTab)}
+                />
+            </Header>
+            <LeftEdgeCover />
+            <RightEdgeCover />
             <PageContainer>
-                <CenteredContent>
-                    <Header>
-                        <Tabs
-                            tabs={tabs}
-                            activeTab={activeTab}
-                            onTabChange={(tabId) => setActiveTab(tabId as TokenFilterTab)}
-                        />
-                    </Header>
-                    <TokenTable tokens={tokens} onAddToken={handleAddToken} onRowClick={handleRowClick} />
-                </CenteredContent>
+                <TokenTable tokens={tokens} onAddToken={handleAddToken} onRowClick={handleRowClick} />
             </PageContainer>
             <TokenDetailsDrawer
                 isOpen={isDrawerOpen}
@@ -96,14 +96,27 @@ export const ScreenerPage = () => {
 };
 
 // Styled Components
+const Header = styled.div`
+    display: flex;
+    align-items: center;
+    width: 100%;
+    background: #000000;
+    padding: ${({ theme }) => theme.spacing.lg};
+    z-index: 100;
+`;
+
 const PageContainer = styled.div`
     width: 100%;
-    height: calc(100vh - 82px); /* Adjust based on header height */
-    display: flex;
+    max-width: 100%;
+    height: calc(100vh - 82px - 66px); /* Adjust for app header (82px) and tabs header (66px) */
+    // display: flex;
     justify-content: center;
-    align-items: flex-start;
-    overflow-y: auto;
-    position: relative;
+    overflow: auto; /* Allow both vertical and horizontal scrolling at page level */
+    position: fixed;
+    padding-left: 15px;
+    padding-right: 15px;
+    background: #000000;
+
 
     /* Fade-to-black gradient at bottom */
     &::after {
@@ -115,29 +128,31 @@ const PageContainer = styled.div`
         height: 100px;
         background: linear-gradient(to bottom, transparent, black);
         pointer-events: none;
-        z-index: 10;
+        z-index: 50;
     }
 `;
 
-const CenteredContent = styled.div`
-    display: flex;
-    flex-direction: column;
-    width: fit-content;
-    padding: ${({ theme }) => theme.spacing.lg};
-    padding-top: 0;
+const LeftEdgeCover = styled.div`
+    position: fixed;
+    left: 0;
+    top: 140px; /* Below header (82px) and tabs (66px) */
+    width: 15px;
+    height: calc(100vh - 148px);
+    background: #000000;
+    z-index: 35; /* Above table content (z-index: 1-10), below sticky column (z-index: 40) */
+    pointer-events: none;
 `;
 
-const Header = styled.div`
-    display: flex;
-    align-items: center;
-    position: sticky;
-    top: 0;
-    z-index: 100;
+const RightEdgeCover = styled.div`
+    position: fixed;
+    right: 0;
+    top: 148px;
+    width: 15px;
+    height: calc(100vh - 148px);
     background: #000000;
-    padding-bottom: ${({ theme }) => theme.spacing.lg};
-    padding-top: ${({ theme }) => theme.spacing.lg};
-    margin-left: calc(-1 * ${({ theme }) => theme.spacing.lg});
-    margin-right: calc(-1 * ${({ theme }) => theme.spacing.lg});
-    padding-left: ${({ theme }) => theme.spacing.lg};
-    padding-right: ${({ theme }) => theme.spacing.lg};
+    z-index: 35;
+    pointer-events: none;
 `;
+
+
+

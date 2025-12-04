@@ -19,6 +19,9 @@ export const GlobalStyles = createGlobalStyle`
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
+    width: 100%;
+    max-width: 100vw;
+    overflow-x: hidden;
   }
 
   /* Body */
@@ -29,7 +32,17 @@ export const GlobalStyles = createGlobalStyle`
     line-height: ${({ theme }) => theme.typography.lineHeight.normal};
     color: ${({ theme }) => theme.colors.textPrimary};
     background-color: ${({ theme }) => theme.colors.bgDark};
+    width: 100%;
+    max-width: 100vw;
     overflow-x: hidden;
+  }
+
+  /* Root container */
+  #root {
+    width: 100%;
+    max-width: 100vw;
+    overflow-x: hidden;
+    min-height: 100vh;
   }
 
   /* Links */

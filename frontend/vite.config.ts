@@ -4,7 +4,7 @@ import path from 'path'
 import svgr from "vite-plugin-svgr";
 
 // https://vite.dev/config/
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
     plugins: [react(), svgr()],
     resolve: {
         alias: {
@@ -25,5 +25,15 @@ export default defineConfig({
                 ws: true
             }
         }
+    },
+    // Remove all console logs in production builds
+    build: {
+        minify: 'terser',
+        terserOptions: mode === 'production' ? {
+            compress: {
+                drop_console: true,
+                drop_debugger: true
+            }
+        } : {}
     }
-})
+}))

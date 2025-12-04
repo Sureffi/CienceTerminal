@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client'
 // import { Auth0Provider, useAuth0 } from '@auth0/auth0-react'
 import { ThemeProvider } from 'styled-components'
 import { theme } from './styles/theme'
+import { GlobalStyles } from './styles/GlobalStyles'
 import App from './App'
 import './styles/fonts.css'
 import './index.css'
@@ -25,6 +26,7 @@ const rootElement = document.getElementById('root')!;
 ReactDOM.createRoot(rootElement).render(
     <React.StrictMode>
         <ThemeProvider theme={theme}>
+            <GlobalStyles />
             <App />
         </ThemeProvider>
     </React.StrictMode>
