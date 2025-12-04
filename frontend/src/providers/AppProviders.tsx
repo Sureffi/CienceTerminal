@@ -9,7 +9,7 @@ import { CaMentionAlertProvider } from './CaMentionAlertProvider';
  * This provides a clean separation of concerns and makes it easy to:
  * - Add/remove providers in one place
  * - See the provider hierarchy at a glance
- * - Toggle between demo/production modes via config
+ * - Toggle between demo/production modes via VITE_DEMO_MODE env var
  *
  * Provider order matters - inner providers can access outer provider contexts.
  */

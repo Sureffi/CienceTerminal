@@ -5,6 +5,7 @@ import { Button } from '@/components/atoms';
 import { useCaMentionAlerts } from '@/providers/CaMentionAlertProvider';
 import { transformCaMentionAlertsToTokens } from '@/utils/caMentionAlertTransformer';
 import { useCoinMentions } from '@/hooks/useCoinMentions';
+import UserIcon from '@/assets/user-icon.svg?react';
 // import type { Token } from '@/types/token';
 
 // Helper function to format follower count
@@ -48,6 +49,13 @@ export const SearchViewPage = () => {
         window.open(axiomUrl, '_blank', 'noopener,noreferrer');
     };
 
+    // Build DexScreener URL
+    const dexUrl = `https://dexscreener.com/solana/${address}`;
+
+    const handleOpenDex = () => {
+        window.open(dexUrl, '_blank', 'noopener,noreferrer');
+    };
+
     const formatNumber = (num: number | null | undefined, isInteger: boolean = false): string => {
         if (num == null || num === 0) return '—';
         if (num >= 1_000_000_000) return `${(num / 1_000_000_000).toFixed(1)}B`;
@@ -85,7 +93,7 @@ export const SearchViewPage = () => {
                             <Button size="lg" onClick={handleOpenAxiom}>
                                 AXIOM
                             </Button>
-                            <Button size='lg'>DEX</Button>
+                            <Button size='lg' onClick={handleOpenDex}>DEX</Button>
                         </ButtonContainer>
                     </MetricsRow>
                 </LeftSection>
@@ -111,7 +119,7 @@ export const SearchViewPage = () => {
                                     <Avatar src={mention.profilePicture} alt={mention.username} />
                                     <AuthorUsername>@{mention.username}</AuthorUsername>
                                     <FollowerCount>
-                                        <UserIconSvg />
+                                        <FollowerIcon as={UserIcon} />
                                         {formatFollowers(mention.followers)}
                                     </FollowerCount>
                                 </AuthorSection>
@@ -296,14 +304,8 @@ const FollowerCount = styled.span`
     color: ${({ theme }) => theme.colors.textPrimary};
 `;
 
-const UserIconSvg = styled.span`
+const FollowerIcon = styled.svg`
     width: 9px;
-    height: 9px;
-    display: inline-block;
-    &::before {
-        content: '👤';
-        font-size: 9px;
-    }
 `;
 
 const TweetText = styled.p`

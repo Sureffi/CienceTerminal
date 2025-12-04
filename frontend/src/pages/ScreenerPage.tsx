@@ -10,8 +10,8 @@ import type { Token, TokenFilterTab } from '@/types/token';
 
 const tabs = [
     { id: 'TRENDING', label: 'TRENDING' },
-    { id: 'TOP', label: 'TOP' },
-    { id: 'NEW', label: 'NEW' },
+    // { id: 'TOP', label: 'TOP' },
+    // { id: 'NEW', label: 'NEW' },
 ];
 
 export const ScreenerPage = () => {

@@ -23,6 +23,7 @@ const MOCK_TOKEN: Token = {
     holdersCount: 2_300,
     top10HoldersPercent: 25,
     devHoldPercent: 5,
+    contractAddress: 'So11111111111111111111111111111111111111112',
     tweet: {
         id: 'tweet1',
         author: {
@@ -59,6 +60,20 @@ export const TweetCard = ({ token, useMockData = false }: TweetCardProps) => {
     const handleViewTweet = () => {
         if (tweet.tweetUrl) {
             window.open(tweet.tweetUrl, '_blank', 'noopener,noreferrer');
+        }
+    };
+
+    const handleOpenAxiom = () => {
+        if (displayToken.contractAddress) {
+            const axiomUrl = `https://axiom.trade/t/${displayToken.contractAddress}?chain=sol`;
+            window.open(axiomUrl, '_blank', 'noopener,noreferrer');
+        }
+    };
+
+    const handleOpenDex = () => {
+        if (displayToken.contractAddress) {
+            const dexUrl = `https://dexscreener.com/solana/${displayToken.contractAddress}`;
+            window.open(dexUrl, '_blank', 'noopener,noreferrer');
         }
     };
 
@@ -108,8 +123,8 @@ export const TweetCard = ({ token, useMockData = false }: TweetCardProps) => {
             {/* Action Buttons */}
             <ActionButtons>
                 <Button size="lg" onClick={handleViewTweet}>VIEW TWEET</Button>
-                <Button size="lg">AXIOM</Button>
-                <Button size="lg">DEX</Button>
+                <Button size="lg" onClick={handleOpenAxiom}>AXIOM</Button>
+                <Button size="lg" onClick={handleOpenDex}>DEX</Button>
             </ActionButtons>
         </Container>
     );

@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Button } from '@/components/atoms';
 import type { Token } from '@/types/token';
 import XIcon from '@/assets/x.svg?react';
+import UserIcon from '@/assets/user-icon.svg?react';
 import { useCoinMentions } from '@/hooks/useCoinMentions';
 
 interface TokenDetailsDrawerProps {
@@ -39,6 +40,13 @@ export const TokenDetailsDrawer = ({ isOpen, onClose, token }: TokenDetailsDrawe
 
     const handleOpenAxiom = () => {
         window.open(axiomUrl, '_blank', 'noopener,noreferrer');
+    };
+
+    // Build DexScreener URL
+    const dexUrl = `https://dexscreener.com/solana/${token.contractAddress}`;
+
+    const handleOpenDex = () => {
+        window.open(dexUrl, '_blank', 'noopener,noreferrer');
     };
 
     const formatNumber = (num: number | null | undefined, isInteger: boolean = false): string => {
@@ -88,7 +96,7 @@ export const TokenDetailsDrawer = ({ isOpen, onClose, token }: TokenDetailsDrawe
                                         <Button size="lg" onClick={handleOpenAxiom}>
                                             AXIOM
                                         </Button>
-                                        <Button size='lg'>DEX</Button>
+                                        <Button size='lg' onClick={handleOpenDex}>DEX</Button>
                                     </ButtonContainer>
                                 </MetricsRow>
                             </LeftSection>
@@ -114,7 +122,7 @@ export const TokenDetailsDrawer = ({ isOpen, onClose, token }: TokenDetailsDrawe
                                                 <Avatar src={mention.profilePicture} alt={mention.username} />
                                                 <AuthorUsername>@{mention.username}</AuthorUsername>
                                                 <FollowerCount>
-                                                    <UserIconSvg />
+                                                    <FollowerIcon as={UserIcon} />
                                                     {formatFollowers(mention.followers)}
                                                 </FollowerCount>
                                             </AuthorSection>
@@ -365,14 +373,8 @@ const FollowerCount = styled.span`
     color: ${({ theme }) => theme.colors.textPrimary};
 `;
 
-const UserIconSvg = styled.span`
+const FollowerIcon = styled.svg`
     width: 9px;
-    height: 9px;
-    display: inline-block;
-    &::before {
-        content: '👤';
-        font-size: 9px;
-    }
 `;
 
 const TweetText = styled.p`

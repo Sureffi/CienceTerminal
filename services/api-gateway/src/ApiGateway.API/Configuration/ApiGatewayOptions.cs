@@ -16,4 +16,10 @@ public class ApiGatewayOptions
     /// When true, routes with AuthorizationPolicy will enforce authentication.
     /// </summary>
     public bool RequireAuthentication { get; set; } = true;
+
+    /// <summary>
+    /// Allowed CORS origins for frontend applications.
+    /// Configure via appsettings.json or environment variables.
+    /// </summary>
+    public string[] CorsOrigins { get; set; } = Array.Empty<string>();
 }
