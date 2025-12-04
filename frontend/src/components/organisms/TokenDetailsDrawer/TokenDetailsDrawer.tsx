@@ -383,11 +383,15 @@ const TweetText = styled.p`
     line-height: 1.6;
     color: ${({ theme }) => theme.colors.textPrimary};
     margin: 0;
+    min-height: 90px;
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
     -webkit-line-clamp: 4;
     -webkit-box-orient: vertical;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
 `;
 
 const ActionButton = styled.button`

@@ -193,13 +193,16 @@ const TweetText = styled.p`
     line-height: 1.6;
     color: ${({ theme }) => theme.colors.textPrimary};
     margin-bottom: 25px;
-    width: 320px;
-    height: 54px;
+    max-width: 320px;
+    min-height: 67px;
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
 `;
 
 const TokenInfoCard = styled.div`
