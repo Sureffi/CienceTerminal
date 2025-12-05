@@ -106,6 +106,12 @@ declare module 'styled-components' {
             desktop: string;
             wide: string;
         };
+        media: {
+            mobile: (styles: TemplateStringsArray | string) => string;
+            tablet: (styles: TemplateStringsArray | string) => string;
+            desktop: (styles: TemplateStringsArray | string) => string;
+            wide: (styles: TemplateStringsArray | string) => string;
+        };
         shadows: {
             none: string;
             sm: string;

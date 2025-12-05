@@ -70,36 +70,34 @@ export const TokenDetailsDrawer = ({ isOpen, onClose, token }: TokenDetailsDrawe
                     </DrawerHeader>
                     <ContentWrapper>
                         <HeaderSection>
-                            <LeftSection>
+                            <ResponsiveGrid>
                                 <TokenInfo>
                                     {token.iconUrl && <TokenLogo src={token.iconUrl} alt={token.symbol} />}
                                     <TokenName>{token.symbol}</TokenName>
                                 </TokenInfo>
 
-                                <MetricsRow>
-                                    <MetricsContainer>
-                                        <MetricGroup>
-                                            <MetricLabel>MCAP</MetricLabel>
-                                            <MetricValue>{formatNumber(token.marketCap)}</MetricValue>
-                                        </MetricGroup>
-                                        <MetricGroup>
-                                            <MetricLabel>MENTIONS</MetricLabel>
-                                            <MetricValue>{formatNumber(token.mentions24h, true)}</MetricValue>
-                                        </MetricGroup>
-                                        <MetricGroup>
-                                            <MetricLabel>HOLDERS</MetricLabel>
-                                            <MetricValue>{formatNumber(token.holdersCount, true)}</MetricValue>
-                                        </MetricGroup>
-                                    </MetricsContainer>
+                                <MetricsContainer>
+                                    <MetricGroup>
+                                        <MetricLabel>MCAP</MetricLabel>
+                                        <MetricValue>{formatNumber(token.marketCap)}</MetricValue>
+                                    </MetricGroup>
+                                    <MetricGroup>
+                                        <MetricLabel>MENTIONS</MetricLabel>
+                                        <MetricValue>{formatNumber(token.mentions24h, true)}</MetricValue>
+                                    </MetricGroup>
+                                    <MetricGroup>
+                                        <MetricLabel>HOLDERS</MetricLabel>
+                                        <MetricValue>{formatNumber(token.holdersCount, true)}</MetricValue>
+                                    </MetricGroup>
+                                </MetricsContainer>
 
-                                    <ButtonContainer>
-                                        <Button size="lg" onClick={handleOpenAxiom}>
-                                            AXIOM
-                                        </Button>
-                                        <Button size='lg' onClick={handleOpenDex}>DEX</Button>
-                                    </ButtonContainer>
-                                </MetricsRow>
-                            </LeftSection>
+                                <ButtonContainer>
+                                    <Button size="lg" onClick={handleOpenAxiom}>
+                                        AXIOM
+                                    </Button>
+                                    <Button size='lg' onClick={handleOpenDex}>DEX</Button>
+                                </ButtonContainer>
+                            </ResponsiveGrid>
                         </HeaderSection>
 
                         <ChartIframe
@@ -210,31 +208,55 @@ const CloseButton = styled.button`
 const ContentWrapper = styled.div`
     flex: 1;
     overflow-y: auto;
-    padding: 16px 24px;
+    padding: 12px 16px;
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    ${({ theme }) => theme.media.tablet`
+        padding: 16px 24px;
+    `}
 `;
 
 const HeaderSection = styled.div`
     width: 100%;
     max-width: 1200px;
     background-color: #000000;
-    padding: 16px 24px;
+    padding: 12px 16px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 16px;
+
+    ${({ theme }) => theme.media.tablet`
+        padding: 16px 24px;
+    `}
 `;
 
-const LeftSection = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
+const ResponsiveGrid = styled.div`
+    display: grid;
     width: 100%;
+    gap: 16px;
+
+    /* Mobile: Token + Buttons on top, Metrics below */
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+        "token buttons"
+        "metrics metrics";
+    align-items: center;
+
+    ${({ theme }) => theme.media.tablet`
+        /* Tablet+: Token on top, Metrics + Buttons on bottom row */
+        grid-template-columns: 1fr auto;
+        grid-template-areas:
+            "token token"
+            "metrics buttons";
+        align-items: start;
+    `}
 `;
 
 const TokenInfo = styled.div`
+    grid-area: token;
     display: flex;
     align-items: center;
     gap: 12px;
@@ -248,24 +270,26 @@ const TokenLogo = styled.img`
 
 const TokenName = styled.h1`
     font-family: ${({ theme }) => theme.typography.fontFamily.primary};
-    font-size: 24px;
+    font-size: 20px;
     font-weight: 700;
     color: #ffffff;
     margin: 0;
     letter-spacing: 0.05em;
-`;
 
-const MetricsRow = styled.div`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
+    ${({ theme }) => theme.media.tablet`
+        font-size: 24px;
+    `}
 `;
 
 const MetricsContainer = styled.div`
+    grid-area: metrics;
     display: flex;
-    gap: 48px;
+    gap: 24px;
     align-items: center;
+
+    ${({ theme }) => theme.media.tablet`
+        gap: 48px;
+    `}
 `;
 
 const MetricGroup = styled.div`
@@ -285,24 +309,40 @@ const MetricLabel = styled.span`
 
 const MetricValue = styled.span`
     font-family: ${({ theme }) => theme.typography.fontFamily.primary};
-    font-size: 20px;
+    font-size: 16px;
     font-weight: 600;
     color: #ffffff;
+
+    ${({ theme }) => theme.media.tablet`
+        font-size: 20px;
+    `}
 `;
 
 const ChartIframe = styled.iframe`
     width: 100%;
     max-width: 1200px;
-    height: 600px;
-    min-height: 600px;
+    height: 400px;
+    min-height: 400px;
     border: none;
     margin-bottom: 16px;
     flex-shrink: 0;
+
+    ${({ theme }) => theme.media.tablet`
+        height: 500px;
+        min-height: 500px;
+    `}
+
+    ${({ theme }) => theme.media.desktop`
+        height: 600px;
+        min-height: 600px;
+    `}
 `;
 
 const ButtonContainer = styled.div`
+    grid-area: buttons;
     display: flex;
     gap: 4px;
+    flex-shrink: 0;
 `;
 
 const MentionsSection = styled.div`
@@ -323,20 +363,33 @@ const MentionsHeader = styled.h2`
 
 const MentionsGrid = styled.div`
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: 1fr;
     gap: 16px;
+
+    ${({ theme }) => theme.media.tablet`
+        grid-template-columns: repeat(2, 1fr);
+    `}
+
+    ${({ theme }) => theme.media.desktop`
+        grid-template-columns: repeat(3, 1fr);
+    `}
 `;
 
 const MentionCard = styled.div`
     background: transparent;
     border: 1px solid ${({ theme }) => theme.colors.borderDefault};
     border-radius: 8px;
-    padding: 20px;
+    padding: 16px;
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 12px;
     transition: .3s ease-out;
     box-shadow: 0 0 0 rgba(255, 255, 255, 0);
+
+    ${({ theme }) => theme.media.tablet`
+        padding: 20px;
+        gap: 16px;
+    `}
 
     &:hover {
         border: 1px solid rgba(255, 255, 255, 0.8);
@@ -383,15 +436,20 @@ const TweetText = styled.p`
     line-height: 1.6;
     color: ${({ theme }) => theme.colors.textPrimary};
     margin: 0;
-    min-height: 90px;
+    min-height: 67px;
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
-    -webkit-line-clamp: 4;
+    -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     word-break: break-word;
     overflow-wrap: break-word;
     white-space: normal;
+
+    ${({ theme }) => theme.media.tablet`
+        min-height: 90px;
+        -webkit-line-clamp: 4;
+    `}
 `;
 
 const ActionButton = styled.button`

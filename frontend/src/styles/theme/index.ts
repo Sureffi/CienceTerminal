@@ -2,7 +2,7 @@ import type { DefaultTheme } from 'styled-components';
 import { colors } from './colors';
 import { typography } from './typography';
 import { spacing } from './spacing';
-import { breakpoints } from './breakpoints';
+import { breakpoints, media } from './breakpoints';
 import { shadows } from './shadows';
 
 /**
@@ -16,6 +16,7 @@ export const theme: DefaultTheme = {
     typography,
     spacing,
     breakpoints,
+    media,
     shadows,
 
     // Transitions
