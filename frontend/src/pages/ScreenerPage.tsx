@@ -146,13 +146,16 @@ const LeftEdgeCover = styled.div`
 const RightEdgeCover = styled.div`
     position: fixed;
     right: 0;
-    top: 148px;
+    top: 140px;
     width: 15px;
     height: calc(100vh - 148px);
     background: #000000;
     z-index: 35;
     pointer-events: none;
 `;
+
+
+
 
 
 
