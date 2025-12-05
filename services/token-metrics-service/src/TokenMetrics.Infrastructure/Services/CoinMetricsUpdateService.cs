@@ -1,5 +1,6 @@
 using CienceTerminal.AWS.Abstractions;
 using CienceTerminal.AWS.Configuration;
+using CienceTerminal.Contracts.Events;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -118,10 +119,7 @@ public class CoinMetricsUpdateService : BackgroundService
 
                 await coinRepository.SaveChangesAsync(cancellationToken);
 
-                // Publish event to notify Alert Service
-                var metricsEvent = coin.ToTokenMetricsUpdatedEvent();
-
-                await eventProducer.PublishAsync(awsOptions.SNS.TokenMetricsUpdatedTopicArn, metricsEvent, cancellationToken);
+                // var metricsEvent = coin.ToTokenMetricsUpdatedEvent();
                 updateCount++;
             }
             catch (Exception ex)
@@ -130,6 +128,10 @@ public class CoinMetricsUpdateService : BackgroundService
                 errorCount++;
             }
         }
+
+        // TODO: Notify once after all coins updated
+        // Publish event to notify Alert Service
+        await eventProducer.PublishAsync(awsOptions.SNS.TokenMetricsUpdatedTopicArn, new TokenMetricsUpdatedEvent(), cancellationToken);
 
         _logger.LogInformation(
             "Coin metrics update completed: {Updated} updated, {Errors} errors out of {Total} coins",

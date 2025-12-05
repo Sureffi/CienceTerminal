@@ -1,9 +1,11 @@
 using AlertService.Application.Interfaces;
+using AlertService.Domain.Configuration;
 using AlertService.Domain.Interfaces;
 using AlertService.Domain.Models;
 using CienceTerminal.Contracts.Enums;
 using MediatR;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace AlertService.Application.Messaging.Commands;
 
@@ -18,19 +20,22 @@ public class ProcessMentionAggregatesUpdateCommandHandler : IRequestHandler<Proc
     private readonly ICaMentionRecordRepository _caMentionRecordRepository;
     private readonly IAlertManager _alertManager;
     private readonly ILogger<ProcessMentionAggregatesUpdateCommandHandler> _logger;
+    private readonly AlertOptions _alertOptions;
 
     public ProcessMentionAggregatesUpdateCommandHandler(
         IMentionAggregateRepository mentionAggregateRepository,
         ICoinRepository coinRepository,
         ICaMentionRecordRepository caMentionRecordRepository,
         IAlertManager alertManager,
-        ILogger<ProcessMentionAggregatesUpdateCommandHandler> logger)
+        ILogger<ProcessMentionAggregatesUpdateCommandHandler> logger,
+        IOptions<AlertOptions> alertOptions)
     {
         _mentionAggregateRepository = mentionAggregateRepository;
         _coinRepository = coinRepository;
         _caMentionRecordRepository = caMentionRecordRepository;
         _alertManager = alertManager;
         _logger = logger;
+        _alertOptions = alertOptions.Value;
     }
 
     public async Task Handle(ProcessMentionAggregatesUpdateCommand request, CancellationToken cancellationToken)
@@ -38,9 +43,7 @@ public class ProcessMentionAggregatesUpdateCommandHandler : IRequestHandler<Proc
         var calculatedAt = request.Event.CalculatedAt;
         _logger.LogInformation("Processing mention aggregates update calculated at {CalculatedAt}", calculatedAt);
 
-        // Get top 25 trending tokens
-        // TODO: Make this use appsettings.json limit
-        var topTrending = await _mentionAggregateRepository.GetTopTrendingAsync(20, cancellationToken);
+        var topTrending = await _mentionAggregateRepository.GetTopTrendingAsync(_alertOptions.TopTrendingLimit, cancellationToken);
         _logger.LogInformation("Found {Count} tokens in top trending list", topTrending.Count);
 
         if (topTrending.Count == 0)

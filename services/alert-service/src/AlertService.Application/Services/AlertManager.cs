@@ -4,7 +4,6 @@ using AlertService.Domain.Configuration;
 using AlertService.Domain.Entities;
 using AlertService.Domain.Interfaces;
 using AlertService.Domain.Models;
-using CienceTerminal.Contracts.Events;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;

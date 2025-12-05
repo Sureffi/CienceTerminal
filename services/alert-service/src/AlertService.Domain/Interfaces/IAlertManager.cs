@@ -1,11 +1,12 @@
 using AlertService.Domain.Entities;
 using AlertService.Domain.Models;
-using CienceTerminal.Contracts.Events;
 
 namespace AlertService.Domain.Interfaces;
 
 public interface IAlertManager
 {
+    // TODO: Method to get a list of active distinct coin addresses?
+
     /// <summary>
     /// Initializes the alert manager by loading persisted alerts from database.
     /// Should be called once on service startup.
