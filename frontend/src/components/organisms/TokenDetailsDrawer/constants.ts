@@ -17,7 +17,7 @@ export const MOBILE_BREAKPOINT = '768px';
 export const DIMENSIONS = {
     drawer: {
         heightDesktop: '90vh',
-        heightMobile: '90vh', // Slightly taller on mobile for better UX
+        heightMobile: '84vh', // Slightly taller on mobile for better UX
         maxWidthDesktop: 1500,
         maxWidthContent: 1200,
         borderRadius: 16,
