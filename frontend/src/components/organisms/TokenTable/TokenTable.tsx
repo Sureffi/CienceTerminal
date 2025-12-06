@@ -65,10 +65,19 @@ const HeaderRow = styled.div`
     grid-template-columns: ${GRID_COLUMNS};
     flex: 1;
     min-width: ${MIN_TABLE_WIDTH};
+
+    @media (max-width: 768px) {
+        min-width: 900px;
+        grid-template-columns: minmax(140px, 1.8fr) minmax(90px, 1.2fr) minmax(60px, 0.7fr) minmax(90px, 1fr) minmax(85px, 1fr) minmax(75px, 0.8fr) minmax(75px, 0.8fr) minmax(70px, 0.8fr) minmax(80px, 0.9fr);
+    }
 `;
 
 const HeaderSpacer = styled.div`
     min-width: ${DIMENSIONS.headerSpacerWidth}px;
+
+    @media (max-width: 768px) {
+        min-width: 40px;
+    }
 `;
 
 const HeaderCell = styled.div<{ $isSticky?: boolean }>`
@@ -87,6 +96,11 @@ const HeaderCell = styled.div<{ $isSticky?: boolean }>`
         `
         ${stickyColumnStyles(Z_INDEX.stickyHeaderIntersection)}
     `}
+
+    @media (max-width: 768px) {
+        font-size: 10px;
+        letter-spacing: 0.3px;
+    }
 `;
 
 const TableBody = styled.div`

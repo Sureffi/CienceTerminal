@@ -117,9 +117,26 @@ const Row = styled.div`
     transition: box-shadow ${({ theme }) => theme.transitions.normal};
     cursor: pointer;
     background: ${({ theme }) => theme.colors.background};
+    touch-action: pan-x;
+    overscroll-behavior-x: contain;
 
-    &:hover {
-        box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.04);
+    /* Only apply hover effects on devices that support hover */
+    @media (hover: hover) {
+        &:hover {
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.04);
+        }
+    }
+
+    /* Touch feedback for mobile */
+    &:active {
+        box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.08);
+    }
+
+    /* Mobile: scale down for better fit while keeping all columns */
+    @media (max-width: 768px) {
+        height: 38px;
+        min-width: 900px; /* Smaller but still requires horizontal scroll */
+        grid-template-columns: minmax(140px, 1.8fr) minmax(90px, 1.2fr) minmax(60px, 0.7fr) minmax(90px, 1fr) minmax(85px, 1fr) minmax(75px, 0.8fr) minmax(75px, 0.8fr) minmax(70px, 0.8fr) minmax(80px, 0.9fr);
     }
 `;
 
@@ -131,9 +148,12 @@ const Cell = styled.div<{ $isSticky?: boolean }>`
     height: 100%;
     transition: border-color ${({ theme }) => theme.transitions.normal};
 
-    ${Row}:hover & {
-        border-top-color: rgba(255, 255, 255, 0.8);
-        border-bottom-color: rgba(255, 255, 255, 0.8);
+    /* Only apply hover border changes on hover-capable devices */
+    @media (hover: hover) {
+        ${Row}:hover & {
+            border-top-color: rgba(255, 255, 255, 0.8);
+            border-bottom-color: rgba(255, 255, 255, 0.8);
+        }
     }
 
     &:last-child {
@@ -141,8 +161,10 @@ const Cell = styled.div<{ $isSticky?: boolean }>`
         border-top-right-radius: 6px;
         border-bottom-right-radius: 6px;
 
-        ${Row}:hover & {
-            border-right-color: rgba(255, 255, 255, 0.8);
+        @media (hover: hover) {
+            ${Row}:hover & {
+                border-right-color: rgba(255, 255, 255, 0.8);
+            }
         }
     }
 
@@ -156,12 +178,14 @@ const Cell = styled.div<{ $isSticky?: boolean }>`
         border-bottom-left-radius: 6px;
     `}
 
-    ${Row}:hover & {
-        ${({ $isSticky }) =>
-        $isSticky &&
-        `
-            border-left-color: rgba(255, 255, 255, 0.8);
-        `}
+    @media (hover: hover) {
+        ${Row}:hover & {
+            ${({ $isSticky }) =>
+            $isSticky &&
+            `
+                border-left-color: rgba(255, 255, 255, 0.8);
+            `}
+        }
     }
 `;
 
@@ -177,6 +201,13 @@ const TokenIcon = styled.img`
     height: ${DIMENSIONS.tokenIconSize}px;
     border-radius: 3px;
     margin: 5px;
+
+    @media (max-width: 768px) {
+        width: 24px;
+        height: 24px;
+        margin: 3px;
+        border-radius: 2px;
+    }
 `;
 
 const MentionsContainer = styled.div`
@@ -201,24 +232,52 @@ const Avatar = styled.img`
     &:first-child {
         margin-left: 0;
     }
+
+    @media (max-width: 768px) {
+        width: 20px;
+        height: 20px;
+        border-width: 1.5px;
+        margin-left: -10px;
+
+        &:first-child {
+            margin-left: 0;
+        }
+
+        /* Show max 2 avatars on mobile to save space */
+        &:nth-child(n+3) {
+            display: none;
+        }
+    }
 `;
 
 const MentionCount = styled.span`
     font-family: ${({ theme }) => theme.typography.fontFamily.mono};
     font-size: 12px;
     color: ${({ theme }) => theme.colors.textPrimary};
+
+    @media (max-width: 768px) {
+        font-size: 11px;
+    }
 `;
 
 const MetricText = styled.span`
     font-family: ${({ theme }) => theme.typography.fontFamily.mono};
     font-size: 12px;
     color: ${({ theme }) => theme.colors.textPrimary};
+
+    @media (max-width: 768px) {
+        font-size: 11px;
+    }
 `;
 
 const PriceChangeText = styled.span<{ $isPositive: boolean }>`
     font-family: ${({ theme }) => theme.typography.fontFamily.mono};
     font-size: 12px;
     color: ${({ theme, $isPositive }) => ($isPositive ? theme.colors.pricePositive : theme.colors.priceNegative)};
+
+    @media (max-width: 768px) {
+        font-size: 11px;
+    }
 `;
 
 const AddButton = styled.button`
@@ -235,8 +294,24 @@ const AddButton = styled.button`
     cursor: pointer;
     transition: ${({ theme }) => theme.transitions.normal};
 
-    &:hover {
+    /* Only apply hover on hover-capable devices */
+    @media (hover: hover) {
+        &:hover {
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.04);
+        }
+    }
+
+    /* Touch feedback */
+    &:active {
         border: 1px solid rgba(255, 255, 255, 0.8);
-        box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.04);
+        box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.08);
+    }
+
+    @media (max-width: 768px) {
+        height: 36px;
+        min-width: 36px;
+        font-size: 18px;
+        border-radius: 5px;
     }
 `;

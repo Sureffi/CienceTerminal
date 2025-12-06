@@ -118,9 +118,20 @@ const PageContainer = styled.div`
     justify-content: center;
     overflow: auto;
     position: fixed;
-    // padding-left: 15px;
-    // padding-right: 15px;
     background: ${({ theme }) => theme.colors.background};
+
+    /* Touch optimization for smooth scrolling */
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    touch-action: pan-y;
+
+    /* Mobile optimizations */
+    @media (max-width: 768px) {
+        /* Use dvh (dynamic viewport height) for better mobile browser support */
+        height: calc(100dvh - ${LAYOUT_HEIGHTS.appHeader}px - ${LAYOUT_HEIGHTS.tabsHeader}px);
+        /* Add safe area insets for notched devices */
+        padding-bottom: env(safe-area-inset-bottom);
+    }
 
     /* Fade-to-black gradient at bottom */
     &::after {
@@ -133,6 +144,10 @@ const PageContainer = styled.div`
         background: linear-gradient(to bottom, transparent, black);
         pointer-events: none;
         z-index: 50;
+
+        @media (max-width: 768px) {
+            bottom: env(safe-area-inset-bottom);
+        }
     }
 `;
 
