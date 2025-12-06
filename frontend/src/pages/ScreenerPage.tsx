@@ -8,10 +8,16 @@ import { useCaMentionAlerts } from '@/providers/CaMentionAlertProvider';
 import { transformCaMentionAlertsToTokens } from '@/utils/caMentionAlertTransformer';
 import type { Token, TokenFilterTab } from '@/types/token';
 
+// Layout height constants for consistent layout calculations
+const LAYOUT_HEIGHTS = {
+    appHeader: 82,
+    tabsHeader: 66,
+    edgeCoverTop: 140, // appHeader + tabsHeader - adjustment
+    edgeCoverOffset: 148,
+} as const;
+
 const tabs = [
     { id: 'TRENDING', label: 'TRENDING' },
-    // { id: 'TOP', label: 'TOP' },
-    // { id: 'NEW', label: 'NEW' },
 ];
 
 export const ScreenerPage = () => {
@@ -81,8 +87,8 @@ export const ScreenerPage = () => {
                     onTabChange={(tabId) => setActiveTab(tabId as TokenFilterTab)}
                 />
             </Header>
-            <LeftEdgeCover />
-            <RightEdgeCover />
+            {/* <LeftEdgeCover /> */}
+            {/* <RightEdgeCover /> */}
             <PageContainer>
                 <TokenTable tokens={tokens} onAddToken={handleAddToken} onRowClick={handleRowClick} />
             </PageContainer>
@@ -100,7 +106,7 @@ const Header = styled.div`
     display: flex;
     align-items: center;
     width: 100%;
-    background: #000000;
+    background: ${({ theme }) => theme.colors.background};
     padding: ${({ theme }) => theme.spacing.lg};
     z-index: 100;
 `;
@@ -108,15 +114,13 @@ const Header = styled.div`
 const PageContainer = styled.div`
     width: 100%;
     max-width: 100%;
-    height: calc(100vh - 82px - 66px); /* Adjust for app header (82px) and tabs header (66px) */
-    // display: flex;
+    height: calc(100vh - ${LAYOUT_HEIGHTS.appHeader}px - ${LAYOUT_HEIGHTS.tabsHeader}px);
     justify-content: center;
-    overflow: auto; /* Allow both vertical and horizontal scrolling at page level */
+    overflow: auto;
     position: fixed;
-    padding-left: 15px;
-    padding-right: 15px;
-    background: #000000;
-
+    // padding-left: 15px;
+    // padding-right: 15px;
+    background: ${({ theme }) => theme.colors.background};
 
     /* Fade-to-black gradient at bottom */
     &::after {
@@ -135,27 +139,21 @@ const PageContainer = styled.div`
 const LeftEdgeCover = styled.div`
     position: fixed;
     left: 0;
-    top: 140px; /* Below header (82px) and tabs (66px) */
+    top: ${LAYOUT_HEIGHTS.edgeCoverTop}px;
     width: 15px;
-    height: calc(100vh - 148px);
-    background: #000000;
-    z-index: 35; /* Above table content (z-index: 1-10), below sticky column (z-index: 40) */
+    height: calc(100vh - ${LAYOUT_HEIGHTS.edgeCoverOffset}px);
+    background: ${({ theme }) => theme.colors.background};
+    z-index: 35;
     pointer-events: none;
 `;
 
 const RightEdgeCover = styled.div`
     position: fixed;
     right: 0;
-    top: 140px;
+    top: ${LAYOUT_HEIGHTS.edgeCoverTop}px;
     width: 15px;
-    height: calc(100vh - 148px);
-    background: #000000;
+    height: calc(100vh - ${LAYOUT_HEIGHTS.edgeCoverOffset}px);
+    background: ${({ theme }) => theme.colors.background};
     z-index: 35;
     pointer-events: none;
 `;
-
-
-
-
-
-

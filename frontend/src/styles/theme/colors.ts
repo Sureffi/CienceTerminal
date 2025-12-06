@@ -11,6 +11,7 @@ export const colors = {
     // ========================================
     // Background Colors
     // ========================================
+    background: '#000000',          // Alias for main background (most common usage)
     bgDark: '#000000',              // Main background
     bgCard: '#111827',              // Card/container background
     bgElevated: '#1F2937',          // Elevated elements (modals, dropdowns)
@@ -63,6 +64,12 @@ export const colors = {
     statusInfo: '#3B82F6',
     statusInfoLight: '#60A5FA',
     statusInfoDark: '#2563EB',
+
+    // ========================================
+    // Price Change Colors
+    // ========================================
+    pricePositive: '#A2FF68',       // Positive price movement (green)
+    priceNegative: '#FF6868',       // Negative price movement (red)
 
     // ========================================
     // Neutral Grays (for granular control)

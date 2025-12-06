@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 import type { Token } from '@/types/token';
 import { TokenIdentifier } from '../TokenIdentifier';
+import { formatNumber, formatPercent, formatPriceChange } from '@/utils/formatters';
+import { GRID_COLUMNS, MIN_TABLE_WIDTH, Z_INDEX, DIMENSIONS, stickyColumnStyles } from '@/components/organisms/TokenTable/constants';
 
 interface TokenRowProps {
     token: Token;
@@ -14,19 +16,6 @@ interface TokenRowProps {
  * Displays a single token's data in the screener table
  */
 export const TokenRow = ({ token, onAdd, onRowClick }: TokenRowProps) => {
-    const formatNumber = (num: number | null | undefined, isInteger: boolean = false): string => {
-        if (num == null || num === 0) return '—';
-        if (num >= 1_000_000_000) return `${(num / 1_000_000_000).toFixed(1)}B`;
-        if (num >= 1_000_000) return `${(num / 1_000_000).toFixed(1)}M`;
-        if (num >= 1_000) return `${(num / 1_000).toFixed(1)}K`;
-        return isInteger ? Math.floor(num).toString() : num.toFixed(2);
-    };
-
-    const formatPercent = (num: number | null | undefined): string => {
-        if (num == null) return '—';
-        return `${num.toFixed(1)}%`;
-    };
-
     const handleRowClick = () => {
         onRowClick?.(token);
     };
@@ -63,12 +52,6 @@ export const TokenRow = ({ token, onAdd, onRowClick }: TokenRowProps) => {
                     </MentionsContainer>
                 </Cell>
 
-                {/* Chart Column - Placeholder for now */}
-                {/* <Cell> */}
-                {/*     <ChartPlaceholder> */}
-                {/*     </ChartPlaceholder> */}
-                {/* </Cell> */}
-
                 {/* Age Column */}
                 <Cell>
                     <MetricText>{token.age}</MetricText>
@@ -77,7 +60,7 @@ export const TokenRow = ({ token, onAdd, onRowClick }: TokenRowProps) => {
                 {/* Price Change */}
                 <Cell>
                     <PriceChangeText $isPositive={(token.priceChange24h ?? 0) >= 0}>
-                        {token.priceChange24h != null ? `${token.priceChange24h > 0 ? '+' : ''}${token.priceChange24h.toFixed(2)}%` : '—'}
+                        {formatPriceChange(token.priceChange24h)}
                     </PriceChangeText>
                 </Cell>
 
@@ -107,12 +90,6 @@ export const TokenRow = ({ token, onAdd, onRowClick }: TokenRowProps) => {
                         {formatPercent(token.top10HoldersPercent)}
                     </MetricText>
                 </Cell>
-
-                {/* Dev Hold % Column */}
-                {/* <Cell> */}
-                {/*     <PercentText>{formatPercent(token.devHoldPercent)} HOLD</PercentText> */}
-                {/* </Cell> */}
-
             </Row>
 
             {/* Add Button - Separate Container */}
@@ -132,20 +109,19 @@ const RowContainer = styled.div`
 
 const Row = styled.div`
     display: grid;
-    height: 44px;
-    grid-template-columns: minmax(200px, 2fr) minmax(120px, 1.5fr) minmax(80px, 0.8fr) minmax(120px, 1.2fr) minmax(110px, 1.2fr) minmax(100px, 1fr) minmax(100px, 1fr) minmax(90px, 1fr) minmax(100px, 1fr);
+    height: ${DIMENSIONS.rowHeight}px;
+    grid-template-columns: ${GRID_COLUMNS};
     align-items: center;
     flex: 1;
-    min-width: 1120px;
-    box-shadow: 0 0 0 rgba(255, 255, 255, 0);
-    transition: box-shadow .3s ease-out;
+    min-width: ${MIN_TABLE_WIDTH};
+    transition: box-shadow ${({ theme }) => theme.transitions.normal};
     cursor: pointer;
-    background: #000000;
+    background: ${({ theme }) => theme.colors.background};
 
     &:hover {
         box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.04);
     }
- `;
+`;
 
 const Cell = styled.div<{ $isSticky?: boolean }>`
     display: flex;
@@ -153,7 +129,7 @@ const Cell = styled.div<{ $isSticky?: boolean }>`
     border-top: 1px solid rgba(255, 255, 255, 0.05);
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     height: 100%;
-    transition: border-color .3s ease-out;
+    transition: border-color ${({ theme }) => theme.transitions.normal};
 
     ${Row}:hover & {
         border-top-color: rgba(255, 255, 255, 0.8);
@@ -173,13 +149,8 @@ const Cell = styled.div<{ $isSticky?: boolean }>`
     ${({ $isSticky }) =>
         $isSticky &&
         `
-        position: sticky;
-        left: 0;
-        background: #000000;
-        z-index: 40;
-        will-change: transform;
-        transform: translateZ(0);
-        backface-visibility: hidden;
+        ${stickyColumnStyles(Z_INDEX.stickyColumn)}
+        background: ${({ theme }) => theme.colors.background};
         border-left: 1px solid rgba(255, 255, 255, 0.05);
         border-top-left-radius: 6px;
         border-bottom-left-radius: 6px;
@@ -202,8 +173,8 @@ const TokenInfo = styled.div`
 `;
 
 const TokenIcon = styled.img`
-    width: 32px;
-    height: 32px;
+    width: ${DIMENSIONS.tokenIconSize}px;
+    height: ${DIMENSIONS.tokenIconSize}px;
     border-radius: 3px;
     margin: 5px;
 `;
@@ -220,9 +191,10 @@ const AvatarStack = styled.div`
 `;
 
 const Avatar = styled.img`
-    width: 28px;
+    width: ${DIMENSIONS.avatarSize}px;
+    height: ${DIMENSIONS.avatarSize}px;
     border-radius: 50%;
-    border: 2px solid black;
+    border: 2px solid ${({ theme }) => theme.colors.background};
     margin-left: -15px;
     object-fit: cover;
 
@@ -237,34 +209,21 @@ const MentionCount = styled.span`
     color: ${({ theme }) => theme.colors.textPrimary};
 `;
 
-// const ChartPlaceholder = styled.div`
-//     width: 54px;
-//     height: 21px;
-//     background: #86EFAC;
-//     border-radius: ${({ theme }) => theme.borderRadius.sm};
-// `;
-
 const MetricText = styled.span`
     font-family: ${({ theme }) => theme.typography.fontFamily.mono};
     font-size: 12px;
     color: ${({ theme }) => theme.colors.textPrimary};
 `;
 
-// const PercentText = styled.span<{ $isHighRisk?: boolean }>`
-//     font-family: ${({ theme }) => theme.typography.fontFamily.mono};
-//     font-size: 12px;
-//     color: ${({ $isHighRisk }) => ($isHighRisk ? '#FF6868' : '#A2FF68')};
-// `;
-
 const PriceChangeText = styled.span<{ $isPositive: boolean }>`
     font-family: ${({ theme }) => theme.typography.fontFamily.mono};
     font-size: 12px;
-    color: ${({ $isPositive }) => ($isPositive ? '#A2FF68' : '#FF6868')};
+    color: ${({ theme, $isPositive }) => ($isPositive ? theme.colors.pricePositive : theme.colors.priceNegative)};
 `;
 
 const AddButton = styled.button`
-    height: 44px;
-    min-width: 44px;
+    height: ${DIMENSIONS.actionButtonSize}px;
+    min-width: ${DIMENSIONS.actionButtonSize}px;
     border-radius: 6px;
     border: 1px solid rgba(255, 255, 255, 0.05);
     background: transparent;
@@ -274,8 +233,7 @@ const AddButton = styled.button`
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: .3s ease-out;
-    box-shadow: 0 0 0 rgba(255, 255, 255, 0);
+    transition: ${({ theme }) => theme.transitions.normal};
 
     &:hover {
         border: 1px solid rgba(255, 255, 255, 0.8);
