@@ -17,7 +17,7 @@ export const MOBILE_BREAKPOINT = '768px';
 export const DIMENSIONS = {
     drawer: {
         heightDesktop: '90vh',
-        heightMobile: '95vh', // Slightly taller on mobile for better UX
+        heightMobile: '90vh', // Slightly taller on mobile for better UX
         maxWidthDesktop: 1500,
         maxWidthContent: 1200,
         borderRadius: 16,
@@ -136,7 +136,7 @@ export const TYPOGRAPHY = {
     },
     tweetText: {
         sizeDesktop: 14,
-        sizeMobile: 11, 
+        sizeMobile: 11,
         lineHeight: 1.6,
         clampMobile: 3,
         clampTablet: 4,
