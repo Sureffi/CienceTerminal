@@ -6,16 +6,11 @@ import terminalIcon from "@/assets/terminal-icon.svg";
 // import watchlistIcon from '@/assets/heart-icon.svg';
 // import { SearchButton } from "@/components/molecules";
 import { useLocation, useNavigate } from "react-router-dom";
+import { MOBILE_BREAKPOINT, DIMENSIONS, Z_INDEX } from './constants';
 
 export const Header = () => {
     const location = useLocation();
     const navigate = useNavigate();
-
-    // TODO(human):
-    // Add onClick and isActive props to each button below:
-    // - SCREENER: onClick={() => navigate('/screener')} isActive={location.pathname === '/screener'}
-    // - TERMINAL: onClick={() => navigate('/terminal')} isActive={location.pathname === '/terminal'}
-    // - WATCHLIST: onClick={() => navigate('/watchlist')} isActive={location.pathname === '/watchlist'}
 
     return (
         <HeaderContainer>
@@ -39,12 +34,21 @@ export const Header = () => {
     );
 }
 
-// Styled Components
+/**
+ * Styled Components
+ *
+ * Responsive Design Pattern (following TokenTable/TokenRow):
+ * - Constants imported from ./constants for maintainability
+ * - Mobile breakpoint (768px) for consistent responsive behavior
+ * - GPU acceleration (translateZ) on mobile for smooth performance
+ * - Touch optimization (touch-action: manipulation) to prevent double-tap zoom
+ * - Dimension scaling from desktop to mobile for better UX
+ */
 const HeaderContainer = styled.header`
     position: sticky;
     top: 0;
-    z-index: 100;
-    padding: 20px 20px;
+    z-index: ${Z_INDEX.header};
+    padding: ${DIMENSIONS.header.paddingDesktop};
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -54,38 +58,71 @@ const HeaderContainer = styled.header`
     border-bottom: 1px solid ${({ theme }) => theme.colors.borderGhost};
     background: ${({ theme }) => theme.colors.bgDark};
     backdrop-filter: blur(8px);
+
+    /* Mobile responsiveness */
+    @media (max-width: ${MOBILE_BREAKPOINT}) {
+        padding: ${DIMENSIONS.header.paddingMobile};
+        /* GPU acceleration for smooth scrolling on mobile */
+        transform: translateZ(0);
+    }
 `;
 
 const Logo = styled.img`
-    height: 32px;
+    height: ${DIMENSIONS.logo.heightDesktop}px;
     width: auto;
     display: block;
+
+    @media (max-width: ${MOBILE_BREAKPOINT}) {
+        height: ${DIMENSIONS.logo.heightMobile}px;
+    }
 `;
 
 const NavButtons = styled.div`
     display: flex;
-    gap: ${({ theme }) => theme.spacing.sm};
+    gap: ${DIMENSIONS.spacing.navButtonsGapDesktop};
     align-items: center;
+
+    /* Touch optimization - prevents double-tap zoom delay on mobile */
+    & > * {
+        touch-action: manipulation;
+    }
+
+    @media (max-width: ${MOBILE_BREAKPOINT}) {
+        gap: ${DIMENSIONS.spacing.navButtonsGapMobile};
+    }
 `;
 
 const LeftSection = styled.div`
     display: flex;
     align-items: center;
-    gap: ${({ theme }) => theme.spacing.lg};
+    gap: ${DIMENSIONS.spacing.leftSectionGapDesktop};
     flex-shrink: 0;
     min-width: 0;
+
+    @media (max-width: ${MOBILE_BREAKPOINT}) {
+        gap: ${DIMENSIONS.spacing.leftSectionGapMobile};
+    }
 `;
 
 const RightSection = styled.div`
     display: flex;
     align-items: center;
-    gap: ${({ theme }) => theme.spacing.sm};
+    gap: ${DIMENSIONS.spacing.rightSectionGapDesktop};
     flex-shrink: 0;
     min-width: 0;
+
+    @media (max-width: ${MOBILE_BREAKPOINT}) {
+        gap: ${DIMENSIONS.spacing.rightSectionGapMobile};
+    }
 `;
 
 const ButtonIcon = styled.img`
-    height: 14px;
-    width: 20px;
+    height: ${DIMENSIONS.buttonIcon.heightDesktop}px;
+    width: ${DIMENSIONS.buttonIcon.widthDesktop}px;
     display: block;
+
+    @media (max-width: ${MOBILE_BREAKPOINT}) {
+        height: ${DIMENSIONS.buttonIcon.heightMobile}px;
+        width: ${DIMENSIONS.buttonIcon.widthMobile}px;
+    }
 `;
