@@ -5,10 +5,12 @@ declare module 'styled-components' {
     export interface DefaultTheme {
         colors: {
             // Background colors
+            background: string;
             bgDark: string;
             bgCard: string;
             bgElevated: string;
             bgOverlay: string;
+            bgTransparent: string;
 
             // Accent colors
             accentGreen: string;
@@ -46,6 +48,10 @@ declare module 'styled-components' {
             statusInfo: string;
             statusInfoLight: string;
             statusInfoDark: string;
+
+            // Price change colors
+            pricePositive: string;
+            priceNegative: string;
 
             // Neutral grays
             gray50: string;

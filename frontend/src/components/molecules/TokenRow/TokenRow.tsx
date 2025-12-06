@@ -32,7 +32,7 @@ export const TokenRow = ({ token, onAdd, onRowClick }: TokenRowProps) => {
                 <Cell $isSticky>
                     <TokenInfo>
                         {token.iconUrl && <TokenIcon src={token.iconUrl} alt={token.symbol} />}
-                        <TokenIdentifier symbol={token.symbol} blockchain={token.blockchain} />
+                        <StyledTokenIdentifier symbol={token.symbol} blockchain={token.blockchain} size="medium" />
                     </TokenInfo>
                 </Cell>
 
@@ -105,6 +105,12 @@ const RowContainer = styled.div`
     display: flex;
     gap: 5px;
     margin-bottom: 5px;
+
+    /* Mobile: scale down for better fit*/
+    @media (max-width: 768px) {
+        margin-bottom: 3px;
+        gap: 3px;
+    }
 `;
 
 const Row = styled.div`
@@ -116,9 +122,8 @@ const Row = styled.div`
     min-width: ${MIN_TABLE_WIDTH};
     transition: box-shadow ${({ theme }) => theme.transitions.normal};
     cursor: pointer;
-    background: ${({ theme }) => theme.colors.background};
-    touch-action: pan-x;
-    overscroll-behavior-x: contain;
+    background: ${({ theme }) => theme.colors.bgTransparent};
+    touch-action: manipulation;
 
     /* Only apply hover effects on devices that support hover */
     @media (hover: hover) {
@@ -132,11 +137,11 @@ const Row = styled.div`
         box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.08);
     }
 
-    /* Mobile: scale down for better fit while keeping all columns */
+    /* Mobile: scale down for better fit*/
     @media (max-width: 768px) {
-        height: 38px;
+        height: 32px;
         min-width: 900px; /* Smaller but still requires horizontal scroll */
-        grid-template-columns: minmax(140px, 1.8fr) minmax(90px, 1.2fr) minmax(60px, 0.7fr) minmax(90px, 1fr) minmax(85px, 1fr) minmax(75px, 0.8fr) minmax(75px, 0.8fr) minmax(70px, 0.8fr) minmax(80px, 0.9fr);
+        grid-template-columns: minmax(120px, 1.0fr) minmax(90px, 1.2fr) minmax(60px, 0.7fr) minmax(90px, 1fr) minmax(85px, 1fr) minmax(75px, 0.8fr) minmax(75px, 0.8fr) minmax(70px, 0.8fr) minmax(80px, 0.9fr);
     }
 `;
 
@@ -147,6 +152,7 @@ const Cell = styled.div<{ $isSticky?: boolean }>`
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     height: 100%;
     transition: border-color ${({ theme }) => theme.transitions.normal};
+    background: #000000;
 
     /* Only apply hover border changes on hover-capable devices */
     @media (hover: hover) {
@@ -172,17 +178,25 @@ const Cell = styled.div<{ $isSticky?: boolean }>`
         $isSticky &&
         `
         ${stickyColumnStyles(Z_INDEX.stickyColumn)}
-        background: ${({ theme }) => theme.colors.background};
         border-left: 1px solid rgba(255, 255, 255, 0.05);
         border-top-left-radius: 6px;
         border-bottom-left-radius: 6px;
+        box-shadow: 4px 0 12px -4px rgba(0, 0, 0, 0.5);
+
+        /* Mobile: scale down for better fit*/
+        @media (max-width: 768px) {
+            // border-right: 1px solid rgba(255, 255, 255, 0.1);
+            background: #131B1475;
+            backdrop-filter: blur(10px);
+        }
+
     `}
 
     @media (hover: hover) {
         ${Row}:hover & {
             ${({ $isSticky }) =>
-            $isSticky &&
-            `
+        $isSticky &&
+        `
                 border-left-color: rgba(255, 255, 255, 0.8);
             `}
         }
@@ -190,10 +204,16 @@ const Cell = styled.div<{ $isSticky?: boolean }>`
 `;
 
 const TokenInfo = styled.div`
+    background: ${({ theme }) => theme.colors.bgTransparent},
     align-items: center;
     display: flex;
     position: relative;
     gap: 16px;
+
+    /* Mobile: scale down for better fit*/
+    @media (max-width: 768px) {
+        gap: 5px;
+    }
 `;
 
 const TokenIcon = styled.img`
@@ -280,6 +300,30 @@ const PriceChangeText = styled.span<{ $isPositive: boolean }>`
     }
 `;
 
+const StyledTokenIdentifier = styled(TokenIdentifier)`
+    /* Custom theming for TokenRow context */
+    /* You can override colors, sizes, spacing, etc. */
+
+    /* Example: Custom color for token name */
+    span:first-child {
+        color: ${({ theme }) => theme.colors.textPrimary};
+    }
+
+    /* Example: Custom opacity for blockchain */
+    span:last-child {
+        opacity: 0.4;
+    }
+
+    /* Mobile: Use small size variant */
+    @media (max-width: 768px) {
+        font-size: 11px;
+        span:first-child {
+            color: ${({ theme }) => theme.colors.textPrimary};
+            font-weight: ${({ theme }) => theme.typography.fontWeight.medium};
+        }
+    }
+`;
+
 const AddButton = styled.button`
     height: ${DIMENSIONS.actionButtonSize}px;
     min-width: ${DIMENSIONS.actionButtonSize}px;
@@ -309,8 +353,8 @@ const AddButton = styled.button`
     }
 
     @media (max-width: 768px) {
-        height: 36px;
-        min-width: 36px;
+        height: 32px;
+        min-width: 32px;
         font-size: 18px;
         border-radius: 5px;
     }

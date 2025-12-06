@@ -12,8 +12,6 @@ import type { Token, TokenFilterTab } from '@/types/token';
 const LAYOUT_HEIGHTS = {
     appHeader: 82,
     tabsHeader: 66,
-    edgeCoverTop: 140, // appHeader + tabsHeader - adjustment
-    edgeCoverOffset: 148,
 } as const;
 
 const tabs = [
@@ -87,8 +85,6 @@ export const ScreenerPage = () => {
                     onTabChange={(tabId) => setActiveTab(tabId as TokenFilterTab)}
                 />
             </Header>
-            {/* <LeftEdgeCover /> */}
-            {/* <RightEdgeCover /> */}
             <PageContainer>
                 <TokenTable tokens={tokens} onAddToken={handleAddToken} onRowClick={handleRowClick} />
             </PageContainer>
@@ -107,28 +103,30 @@ const Header = styled.div`
     align-items: center;
     width: 100%;
     background: ${({ theme }) => theme.colors.background};
-    padding: ${({ theme }) => theme.spacing.lg};
+    padding: ${({ theme }) => theme.spacing.md};
     z-index: 100;
 `;
 
 const PageContainer = styled.div`
     width: 100%;
     max-width: 100%;
-    height: calc(100vh - ${LAYOUT_HEIGHTS.appHeader}px - ${LAYOUT_HEIGHTS.tabsHeader}px);
+    position: absolute;
+    top: ${LAYOUT_HEIGHTS.appHeader + LAYOUT_HEIGHTS.tabsHeader}px;
+    left: 0;
+    right: 0;
+    bottom: 0;
     justify-content: center;
     overflow: auto;
-    position: fixed;
     background: ${({ theme }) => theme.colors.background};
 
     /* Touch optimization for smooth scrolling */
     -webkit-overflow-scrolling: touch;
     overscroll-behavior: contain;
-    touch-action: pan-y;
+    scroll-behavior: smooth;
+    scrollbar-gutter: stable;
 
     /* Mobile optimizations */
     @media (max-width: 768px) {
-        /* Use dvh (dynamic viewport height) for better mobile browser support */
-        height: calc(100dvh - ${LAYOUT_HEIGHTS.appHeader}px - ${LAYOUT_HEIGHTS.tabsHeader}px);
         /* Add safe area insets for notched devices */
         padding-bottom: env(safe-area-inset-bottom);
     }
@@ -136,39 +134,14 @@ const PageContainer = styled.div`
     /* Fade-to-black gradient at bottom */
     &::after {
         content: '';
-        position: fixed;
+        position: sticky;
         bottom: 0;
         left: 0;
         right: 0;
         height: 100px;
+        margin-top: -100px;
         background: linear-gradient(to bottom, transparent, black);
         pointer-events: none;
         z-index: 50;
-
-        @media (max-width: 768px) {
-            bottom: env(safe-area-inset-bottom);
-        }
     }
-`;
-
-const LeftEdgeCover = styled.div`
-    position: fixed;
-    left: 0;
-    top: ${LAYOUT_HEIGHTS.edgeCoverTop}px;
-    width: 15px;
-    height: calc(100vh - ${LAYOUT_HEIGHTS.edgeCoverOffset}px);
-    background: ${({ theme }) => theme.colors.background};
-    z-index: 35;
-    pointer-events: none;
-`;
-
-const RightEdgeCover = styled.div`
-    position: fixed;
-    right: 0;
-    top: ${LAYOUT_HEIGHTS.edgeCoverTop}px;
-    width: 15px;
-    height: calc(100vh - ${LAYOUT_HEIGHTS.edgeCoverOffset}px);
-    background: ${({ theme }) => theme.colors.background};
-    z-index: 35;
-    pointer-events: none;
 `;

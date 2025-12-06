@@ -16,6 +16,7 @@ export const colors = {
     bgCard: '#111827',              // Card/container background
     bgElevated: '#1F2937',          // Elevated elements (modals, dropdowns)
     bgOverlay: 'rgba(0, 0, 0, 0.8)', // Modal overlay/backdrop
+    bgTransparent: 'rgba(0, 0, 0, 0.5)',
 
     // ========================================
     // Accent Colors (Brand)

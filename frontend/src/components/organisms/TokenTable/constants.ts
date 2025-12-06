@@ -8,10 +8,15 @@
 import { css } from 'styled-components';
 
 /**
+ * Responsive breakpoint for mobile devices
+ */
+export const MOBILE_BREAKPOINT = '768px';
+
+/**
  * Grid column template - must match exactly between header and rows
  * Columns: TOKEN | 24H MENTIONS | AGE | PRICE CHANGE | MARKET CAP | VOLUME | LIQUIDITY | HOLDERS | TOP 10 HOLDERS
  */
-export const GRID_COLUMNS = 'minmax(200px, 2fr) minmax(120px, 1.5fr) minmax(80px, 0.8fr) minmax(120px, 1.2fr) minmax(110px, 1.2fr) minmax(100px, 1fr) minmax(100px, 1fr) minmax(90px, 1fr) minmax(100px, 1fr)';
+export const GRID_COLUMNS = 'minmax(210px, 1.0fr) minmax(120px, 1.5fr) minmax(80px, 0.8fr) minmax(120px, 1.2fr) minmax(110px, 1.2fr) minmax(100px, 1fr) minmax(100px, 1fr) minmax(90px, 1fr) minmax(100px, 1fr)';
 
 /**
  * Minimum table width to accommodate all columns
@@ -41,14 +46,16 @@ export const DIMENSIONS = {
 } as const;
 
 /**
- * Shared sticky column styles with GPU acceleration
+ * Shared sticky column styles
  * Apply to elements that need horizontal sticky positioning
+ * GPU acceleration is applied only on mobile for better performance
  */
 export const stickyColumnStyles = (zIndex: number) => css`
     position: sticky;
     left: 0;
     z-index: ${zIndex};
-    will-change: transform;
-    transform: translateZ(0);
-    backface-visibility: hidden;
+
+    @media (max-width: 768px) {
+        transform: translateZ(0);
+    }
 `;

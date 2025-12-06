@@ -46,7 +46,6 @@ export const TokenTable = ({ tokens, onAddToken, onRowClick }: TokenTableProps) 
 // Styled Components
 const TableContainer = styled.div`
     width: 100%;
-    max-width: 100%;
     background: ${({ theme }) => theme.colors.background};
 `;
 
@@ -68,7 +67,8 @@ const HeaderRow = styled.div`
 
     @media (max-width: 768px) {
         min-width: 900px;
-        grid-template-columns: minmax(140px, 1.8fr) minmax(90px, 1.2fr) minmax(60px, 0.7fr) minmax(90px, 1fr) minmax(85px, 1fr) minmax(75px, 0.8fr) minmax(75px, 0.8fr) minmax(70px, 0.8fr) minmax(80px, 0.9fr);
+        // TODO: Add variable for mobile template and use here and in token row
+        grid-template-columns: minmax(120px, 1.0fr) minmax(90px, 1.2fr) minmax(60px, 0.7fr) minmax(90px, 1fr) minmax(85px, 1fr) minmax(75px, 0.8fr) minmax(75px, 0.8fr) minmax(70px, 0.8fr) minmax(80px, 0.9fr);
     }
 `;
 
@@ -95,6 +95,8 @@ const HeaderCell = styled.div<{ $isSticky?: boolean }>`
         $isSticky &&
         `
         ${stickyColumnStyles(Z_INDEX.stickyHeaderIntersection)}
+        // border-right: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 4px 0 12px -4px rgba(0, 0, 0, 0.5);
     `}
 
     @media (max-width: 768px) {
