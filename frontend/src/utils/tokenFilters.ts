@@ -88,9 +88,12 @@ export const applyTokenFilters = (tokens: Token[], filters: TokenFilters): Token
         }
 
         // Age filter (convert age string to hours)
-        if (filters.ageHoursMax !== undefined) {
+        if (filters.ageHoursMin !== undefined || filters.ageHoursMax !== undefined) {
             const ageHours = parseAgeToHours(token.age);
-            if (ageHours > filters.ageHoursMax) {
+            if (filters.ageHoursMin !== undefined && ageHours < filters.ageHoursMin) {
+                return false;
+            }
+            if (filters.ageHoursMax !== undefined && ageHours > filters.ageHoursMax) {
                 return false;
             }
         }
