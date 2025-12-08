@@ -68,22 +68,22 @@ export const ScreenerPage = () => {
     }, [allTokens, activeTab, filters]);
 
     const handleAddToken = (token: Token) => {
-        // Open drawer when + button is clicked
-        setSelectedToken(token);
-        setIsDrawerOpen(true);
-    };
-
-    const handleRowClick = (token: Token) => {
         if (isMobile) {
-            // On mobile: Open drawer instead of navigating
+            // On mobile: Open drawer
             setSelectedToken(token);
             setIsDrawerOpen(true);
         } else {
-            // On desktop: Navigate to search page
+            // On desktop: Navigate to search page when + button is clicked
             if (token.contractAddress) {
                 navigate(`/search/${token.contractAddress}`);
             }
         }
+    };
+
+    const handleRowClick = (token: Token) => {
+        // Open drawer when row is clicked (both mobile and desktop)
+        setSelectedToken(token);
+        setIsDrawerOpen(true);
     };
 
     const handleCloseDrawer = () => {
