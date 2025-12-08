@@ -21,6 +21,10 @@ export const PAGE_DIMENSIONS = {
         paddingTopDesktop: '10px',
         paddingTopMobile: '8px',
     },
+    screenerPage: {
+        horizontalPaddingDesktop: '25px',
+        horizontalPaddingMobile: '0px',
+    },
     tabs: {
         container: {
             gapDesktop: '5px',
@@ -49,7 +53,7 @@ export const LAYOUT_HEIGHTS = {
     // Main app header with logo and navigation
     // Desktop: 20px (top padding) + ~32px (logo/content) + 20px (bottom padding) + ~10px (buffer) = 82px
     // Mobile: 12px (top padding) + ~24px (logo/content) + 12px (bottom padding) + ~18px (buffer) = 66px
-    appHeaderDesktop: 70,
+    appHeaderDesktop: 78,
     appHeaderMobile: 62,
 
     // Tabs section header
@@ -65,4 +69,5 @@ export const LAYOUT_HEIGHTS = {
 export const Z_INDEX = {
     pageHeader: 95,
     gradientOverlay: 50,
+    filterOverlay: 100, // Above page header
 } as const;

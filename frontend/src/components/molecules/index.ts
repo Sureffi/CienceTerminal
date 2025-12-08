@@ -1,3 +1,4 @@
+export * from './FilterPanel/';
 export * from './LoginButton/';
 export * from './LogoutButton/';
 export * from './SearchButton/';
