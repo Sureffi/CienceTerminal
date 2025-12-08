@@ -23,6 +23,7 @@ export interface TokenFilters {
     trendScoreMin?: number;
 
     // Age
+    ageHoursMin?: number;
     ageHoursMax?: number;
 }
 
@@ -165,15 +166,24 @@ export const FilterPanel = ({ filters, onFiltersChange, onReset, onApply }: Filt
                     <FilterRow>
                         <FilterGroup>
                             <Label>
-                                Max Age
+                                Age
                                 <Hint>(hours)</Hint>
                             </Label>
-                            <Input
-                                type="number"
-                                placeholder="Max hours"
-                                value={draftFilters.ageHoursMax ?? ''}
-                                onChange={(e) => handleInputChange('ageHoursMax', e.target.value)}
-                            />
+                            <RangeInputs>
+                                <Input
+                                    type="number"
+                                    placeholder="Min"
+                                    value={draftFilters.ageHoursMin ?? ''}
+                                    onChange={(e) => handleInputChange('ageHoursMin', e.target.value)}
+                                />
+                                <RangeSeparator>–</RangeSeparator>
+                                <Input
+                                    type="number"
+                                    placeholder="Max"
+                                    value={draftFilters.ageHoursMax ?? ''}
+                                    onChange={(e) => handleInputChange('ageHoursMax', e.target.value)}
+                                />
+                            </RangeInputs>
                         </FilterGroup>
                     </FilterRow>
                     <FilterRow>
