@@ -2,32 +2,11 @@
 
 A React + TypeScript + Vite application for real-time cryptocurrency monitoring and alerts.
 
-## 🚧 Refactoring in Progress
-
-**Current Branch**: `frontend-demo-mode`
-
-This frontend is undergoing a complete refactor to production-ready standards with styled-components and modern architecture.
-
-📚 **Refactoring Documentation**:
-- **[REFACTORING_PLAN.md](./REFACTORING_PLAN.md)** - Complete 6-week refactoring strategy
-- **[COMPONENT_ARCHITECTURE.md](./COMPONENT_ARCHITECTURE.md)** - Component patterns and best practices
-- **[GETTING_STARTED.md](./GETTING_STARTED.md)** - Setup guide for the new architecture
-
-✅ **Completed**:
-- Installed styled-components + TypeScript types
-- Created comprehensive design system (theme, tokens, animations)
-- Built atomic component examples (Button, Badge)
-- Set up path aliases (`@/` imports)
-- Written detailed documentation
-
-🚧 **Next Steps**:
-- Customize theme with designer's specifications
-- Build complete component library
-- Migrate existing features to new architecture
+Mid-refactor to styled-components: the design system (theme, tokens, animations), `@/` path aliases and the first atoms (Button, Badge) are in; the rest of the features still run on the implementation below.
 
 ---
 
-## Current Implementation (Legacy)
+## Current Implementation
 
 ## Features
 
